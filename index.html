@@ -3,8 +3,8 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MPL Standing Simulator</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>MPL Standing Simulator | Season Tracker</title>
     <style>
         * {
             box-sizing: border-box;
@@ -13,7 +13,7 @@
         }
 
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
             background: #f5f0eb;
             min-height: 100vh;
             padding: 32px 24px;
@@ -36,12 +36,12 @@
 
         .top-team {
             background-color: #c6ffca;
-            /* hijau soft */
+            /* soft green */
         }
 
         .bottom-team {
             background-color: #ffc2c2;
-            /* merah soft */
+            /* soft red */
         }
 
         .subtitle-bar {
@@ -117,6 +117,12 @@
             gap: 8px;
             margin-top: 48px;
             flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .btn-current {
+            background: #2c3e50;
+            color: white;
         }
 
         button {
@@ -128,9 +134,12 @@
             letter-spacing: 1px;
             text-transform: uppercase;
             cursor: pointer;
-            transition: opacity 0.15s;
+            transition: opacity 0.15s, transform 0.05s;
         }
 
+        button:active {
+            transform: scale(0.97);
+        }
 
         .btn-add {
             background: #c0392b;
@@ -145,6 +154,85 @@
         .btn-reset {
             background: #ddd;
             color: #555;
+        }
+
+        /* INFO ICON & TOOLTIP STYLES */
+        .info-wrapper {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: transparent;
+        }
+
+        .icon-info {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background: #6996d4;
+            color: white;
+            font-size: 13px;
+            font-weight: bold;
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            cursor: help;
+            transition: background 0.2s;
+            font-family: monospace;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+        }
+
+        .icon-info:hover {
+            background: #2c3e50;
+        }
+
+        /* custom tooltip (no extra library) */
+        .tooltip-hint {
+            position: relative;
+            display: inline-flex;
+        }
+
+        .tooltip-hint .tooltip-text {
+            visibility: hidden;
+            opacity: 0;
+            background-color: #1e2a36;
+            color: #f0f0f0;
+            text-align: left;
+            border-radius: 8px;
+            padding: 8px 12px;
+            position: absolute;
+            z-index: 20;
+            bottom: 135%;
+            left: 50%;
+            transform: translateX(-50%);
+            white-space: normal;
+            width: 260px;
+            font-size: 11px;
+            font-weight: normal;
+            letter-spacing: 0.3px;
+            text-transform: none;
+            font-family: 'Segoe UI', Arial, sans-serif;
+            line-height: 1.4;
+            box-shadow: 0 5px 12px rgba(0, 0, 0, 0.2);
+            transition: opacity 0.2s, visibility 0.2s;
+            pointer-events: none;
+            backdrop-filter: blur(2px);
+            background: #1e2a36e6;
+        }
+
+        .tooltip-hint .tooltip-text::after {
+            content: "";
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            margin-left: -6px;
+            border-width: 6px;
+            border-style: solid;
+            border-color: #1e2a36 transparent transparent transparent;
+        }
+
+        .tooltip-hint:hover .tooltip-text {
+            visibility: visible;
+            opacity: 1;
         }
 
         #matchList {
@@ -183,7 +271,7 @@
             font-size: 11px;
             letter-spacing: 2px;
             text-transform: uppercase;
-            color: #888;
+            color: #ffffff;
             font-weight: 700;
         }
 
@@ -208,13 +296,6 @@
 
         tbody tr:last-child td {
             border-bottom: none;
-        }
-
-
-
-        .top-team,
-        .bottom-team {
-            transition: 0.2s;
         }
 
         .rank-badge {
@@ -267,7 +348,6 @@
         }
 
         @media (max-width: 768px) {
-
             body {
                 padding: 16px 10px;
             }
@@ -288,14 +368,6 @@
 
             table {
                 font-size: 12px;
-            }
-
-            th,
-            td {
-                padding: 8px;
-            }
-
-            table {
                 display: block;
                 overflow-x: auto;
                 white-space: nowrap;
@@ -303,19 +375,29 @@
 
             .btn-row {
                 flex-direction: column;
+                align-items: stretch;
             }
 
             button {
                 width: 100%;
             }
+
+            .info-wrapper {
+                justify-content: center;
+            }
+
+            .tooltip-hint .tooltip-text {
+                width: 220px;
+                font-size: 10px;
+                left: 50%;
+                transform: translateX(-50%);
+                bottom: 145%;
+            }
         }
 
-        .top-team {
-            box-shadow: inset 0 -5px rgba(255, 255, 255, 0.3);
-        }
-
+        .top-team,
         .bottom-team {
-            box-shadow: inset 0 -5px rgba(255, 255, 255, 0.25);
+            transition: 0.2s;
         }
 
         .team-cell {
@@ -324,17 +406,10 @@
             gap: 6px;
         }
 
-
         .team-cell img {
             width: 26px;
             height: 26px;
             object-fit: contain;
-        }
-
-
-        .team-name {
-            font-size: 13px;
-            font-weight: 600;
         }
 
         td:first-child {
@@ -372,6 +447,19 @@
                 <button class="btn-add" onclick="addMatch()">Add Match</button>
                 <button class="btn-undo" onclick="undoMatch()">Undo</button>
                 <button class="btn-reset" onclick="resetAll()">Reset</button>
+                <div class="info-wrapper">
+                    <button class="btn-current" onclick="loadCurrent()">Load Current Standings</button>
+                    <div class="tooltip-hint">
+                        <span class="icon-info" aria-label="information">i</span>
+                        <span class="tooltip-text">
+                            ⚡ <strong>Load Current Standings</strong> — instantly loads pre-defined MPL matches (Weeks
+                            1-4).
+                            Includes real simulated results for MPL ID Teams. Overwrites current match
+                            list.
+                            Perfect to see example standings with head-to-head tiebreaker!
+                        </span>
+                    </div>
+                </div>
             </div>
         </div>
         <div class="box">
@@ -398,15 +486,67 @@
 
     <script>
         const teamNames = ["ONIC", "TEAM LIQUID ID", "DEWA UNITED", "GEEK FAM", "BIGETRON", "ALTER EGO", "EVOS", "NAVI", "RRQ"];
-        let teams = {}, matches = [];
 
+        const currentMatches = [
+            { week: "Week 1", A: "BIGETRON", B: "ALTER EGO", aScore: 2, bScore: 1 },
+            { week: "Week 1", A: "NAVI", B: "RRQ", aScore: 2, bScore: 0 },
+            { week: "Week 1", A: "EVOS", B: "GEEK FAM", aScore: 2, bScore: 0 },
+            { week: "Week 1", A: "ALTER EGO", B: "ONIC", aScore: 0, bScore: 2 },
+            { week: "Week 1", A: "TEAM LIQUID ID", B: "NAVI", aScore: 2, bScore: 1 },
+            { week: "Week 1", A: "DEWA UNITED", B: "BIGETRON", aScore: 2, bScore: 0 },
+            { week: "Week 1", A: "EVOS", B: "TEAM LIQUID ID", aScore: 0, bScore: 2 },
+            { week: "Week 1", A: "RRQ", B: "ONIC", aScore: 0, bScore: 2 },
+    
+            { week: "Week 2", A: "ONIC", B: "GEEK FAM", aScore: 2, bScore: 0 },
+            { week: "Week 2", A: "DEWA UNITED", B: "NAVI", aScore: 2, bScore: 0 },
+            { week: "Week 2", A: "GEEK FAM", B: "BIGETRON", aScore: 2, bScore: 0 },
+            { week: "Week 2", A: "ALTER EGO", B: "EVOS", aScore: 2, bScore: 1 },
+            { week: "Week 2", A: "TEAM LIQUID ID", B: "DEWA UNITED", aScore: 2, bScore: 1 },
+            { week: "Week 2", A: "NAVI", B: "ALTER EGO", aScore: 1, bScore: 2 },
+            { week: "Week 2", A: "RRQ", B: "TEAM LIQUID ID", aScore: 0, bScore: 2 },
+            { week: "Week 2", A: "BIGETRON", B: "EVOS", aScore: 2, bScore: 1 },
+         
+            { week: "Week 3", A: "ONIC", B: "DEWA UNITED", aScore: 2, bScore: 1 },
+            { week: "Week 3", A: "NAVI", B: "EVOS", aScore: 0, bScore: 2 },
+            { week: "Week 3", A: "TEAM LIQUID ID", B: "GEEK FAM", aScore: 0, bScore: 2 },
+            { week: "Week 3", A: "ONIC", B: "BIGETRON", aScore: 1, bScore: 2 },
+            { week: "Week 3", A: "RRQ", B: "ALTER EGO", aScore: 1, bScore: 2 },
+            { week: "Week 3", A: "BIGETRON", B: "NAVI", aScore: 1, bScore: 2 },
+            { week: "Week 3", A: "GEEK FAM", B: "RRQ", aScore: 2, bScore: 1 },
+            { week: "Week 3", A: "ALTER EGO", B: "DEWA UNITED", aScore: 0, bScore: 2 },
+            
+            { week: "Week 4", A: "NAVI", B: "ONIC", aScore: 0, bScore: 2 },
+            { week: "Week 4", A: "EVOS", B: "DEWA UNITED", aScore: 2, bScore: 0 },
+            { week: "Week 4", A: "GEEK FAM", B: "ALTER EGO", aScore: 2, bScore: 1 },
+            { week: "Week 4", A: "TEAM LIQUID ID", B: "BIGETRON", aScore: 2, bScore: 0 },
+            { week: "Week 4", A: "RRQ", B: "EVOS", aScore: 1, bScore: 2 },
+            { week: "Week 4", A: "ONIC", B: "TEAM LIQUID ID", aScore: 2, bScore: 1 }
+        ];
+
+        let teams = {};
+        let matches = [];
+
+      
         function initTeams() {
             teams = {};
-            teamNames.forEach(n => teams[n] = { name: n, win: 0, lose: 0, gameWin: 0, gameLose: 0 });
+            teamNames.forEach(n => {
+                teams[n] = {
+                    name: n,
+                    win: 0,
+                    lose: 0,
+                    gameWin: 0,
+                    gameLose: 0,
+                    matchPoint: 0,
+                    netGame: 0
+                };
+            });
         }
 
         function populateWeek() {
-            document.getElementById("week").innerHTML = Array.from({ length: 9 }, (_, i) => `<option>Week ${i + 1}</option>`).join("");
+            const weekSelect = document.getElementById("week");
+            let options = "";
+            for (let i = 1; i <= 9; i++) options += `<option>Week ${i}</option>`;
+            weekSelect.innerHTML = options;
         }
 
         function populateDropdown() {
@@ -415,108 +555,23 @@
             document.getElementById("teamB").innerHTML = opts;
         }
 
-        function addMatch() {
-            const week = document.getElementById("week").value;
-            const A = document.getElementById("teamA").value;
-            const B = document.getElementById("teamB").value;
-            const score = document.getElementById("score").value;
-
-            if (A === B) {
-                alert("Team tidak boleh sama");
-                return;
-            }
-
-            const [aScore, bScore] = score.split("-").map(Number);
-
-            matches.push({ week, A, B, aScore, bScore });
-            saveData(); // 🔥 penting
-            update();
-        }
-
-        function undoMatch() {
-            if (!matches.length) {
-                alert("Tidak ada match untuk di-undo");
-                return;
-            }
-
-            matches.pop();
-            saveData(); // 🔥
-            update();
-        }
-
-        function resetAll() {
-            if (confirm("Yakin mau reset semua data?")) {
-                matches = [];
-                localStorage.removeItem("mpl_matches");
-                update();
-            }
-        }
-
-        function update() {
-            initTeams();
+        function getHeadToHead(aName, bName) {
+            let aWins = 0, bWins = 0;
             matches.forEach(m => {
-                const tA = teams[m.A], tB = teams[m.B];
-                tA.gameWin += m.aScore; tA.gameLose += m.bScore;
-                tB.gameWin += m.bScore; tB.gameLose += m.aScore;
-                if (m.aScore > m.bScore) { tA.win++; tB.lose++; } else { tB.win++; tA.lose++; }
+                if (m.A === aName && m.B === bName) {
+                    if (m.aScore > m.bScore) aWins++;
+                    else bWins++;
+                }
+                if (m.A === bName && m.B === aName) {
+                    if (m.bScore > m.aScore) aWins++;
+                    else bWins++;
+                }
             });
-            renderMatch(); renderTable();
+            if (aWins > bWins) return -1;   
+            if (bWins > aWins) return 1;    
+            return 0;
         }
 
-        function renderMatch() {
-            const list = document.getElementById("matchList");
-
-            if (!matches.length) {
-                list.innerHTML = '<li class="empty-note">No matches yet.</li>';
-                return;
-            }
-
-
-            let grouped = {};
-
-            matches.forEach(m => {
-                if (!grouped[m.week]) grouped[m.week] = [];
-                grouped[m.week].push(m);
-            });
-
-            let html = "";
-
-            Object.keys(grouped).forEach(week => {
-                html += `<li style="margin-top:10px; font-weight:bold;">${week}</li>`;
-
-                grouped[week].forEach(m => {
-                    html += `
-            <li style="display:flex; align-items:center; gap:6px;">
-                <img src="${getLogo(m.A)}" width="16">
-                ${m.A}
-                <strong>${m.aScore}-${m.bScore}</strong>
-                <img src="${getLogo(m.B)}" width="16">
-                ${m.B}
-            </li>`;
-                });
-            });
-
-            list.innerHTML = html;
-        }
-        function getHeadToHead(a, b) {
-                let aWin = 0;
-                let bWin = 0;
-
-                matches.forEach(m => {
-                    if (m.A === a && m.B === b) {
-                        if (m.aScore > m.bScore) aWin++;
-                        else bWin++;
-                    }
-                    if (m.A === b && m.B === a) {
-                        if (m.bScore > m.aScore) aWin++;
-                        else bWin++;
-                    }
-                });
-
-                if (aWin > bWin) return -1; // a di atas
-                if (bWin > aWin) return 1;  // b di atas
-                return 0; // masih imbang
-            }
         function getLogo(team) {
             const logos = {
                 "ONIC": "logo/onic.png",
@@ -529,36 +584,103 @@
                 "NAVI": "logo/navi.png",
                 "RRQ": "logo/rrq.png"
             };
-
             return logos[team] || "logo/default.png";
+        }
+
+        function renderMatch() {
+            const list = document.getElementById("matchList");
+            if (!matches.length) {
+                list.innerHTML = '<li class="empty-note">📋 No matches yet. Add matches or click "Load Current Standings".</li>';
+                return;
+            }
+
+            let grouped = {};
+            matches.forEach(m => {
+                if (!grouped[m.week]) grouped[m.week] = [];
+                grouped[m.week].push(m);
+            });
+
+            let html = "";
+            Object.keys(grouped).sort((a, b) => {
+                const numA = parseInt(a.split(" ")[1]) || 0;
+                const numB = parseInt(b.split(" ")[1]) || 0;
+                return numA - numB;
+            }).forEach(week => {
+                html += `<li style="margin-top:10px; font-weight:bold; background:#ddd; padding:4px 6px; border-radius:6px;"> ${week}</li>`;
+                grouped[week].forEach(m => {
+                    html += `
+                        <li style="display:flex; align-items:center; gap:6px; padding:6px 0;">
+                            <img src="${getLogo(m.A)}" width="18" height="18" style="object-fit:contain;" onerror="this.src='data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2218%22%20height%3D%2218%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22%23aaa%22%3E%3Ccircle%20cx%3D%2212%22%20cy%3D%2212%22%20r%3D%2210%22%2F%3E%3C%2Fsvg%3E'">
+                            <strong>${m.A}</strong>
+                            <span style=color:#1e1e1e; padding:2px 6px; border-radius:20px; font-weight:bold;">${m.aScore} - ${m.bScore}</span>
+                            <img src="${getLogo(m.B)}" width="18" height="18" style="object-fit:contain;" onerror="this.src='data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2218%22%20height%3D%2218%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22%23aaa%22%3E%3Ccircle%20cx%3D%2212%22%20cy%3D%2212%22%20r%3D%2210%22%2F%3E%3C%2Fsvg%3E'">
+                            <strong>${m.B}</strong>
+                        </li>`;
+                });
+            });
+            list.innerHTML = html;
+        }
+
+        function update() {
+            initTeams();
+            matches.forEach(m => {
+                const tA = teams[m.A];
+                const tB = teams[m.B];
+                if (!tA || !tB) return;
+                tA.gameWin += m.aScore;
+                tA.gameLose += m.bScore;
+                tB.gameWin += m.bScore;
+                tB.gameLose += m.aScore;
+                if (m.aScore > m.bScore) {
+                    tA.win++;
+                    tB.lose++;
+                } else {
+                    tB.win++;
+                    tA.lose++;
+                }
+            });
+            renderMatch();
+            renderTable();
+            saveData(); 
         }
 
         function renderTable() {
             const arr = Object.values(teams);
-            arr.forEach(t => { t.matchPoint = t.win; t.netGame = t.gameWin - t.gameLose; });
-            arr.sort((a, b) =>
-                b.matchPoint - a.matchPoint ||
-                b.win - a.win ||
-                b.netGame - a.netGame ||
-                b.gameWin - a.gameWin ||
-                getHeadToHead(a.name, b.name) || // 🔥 INI KUNCI
-                a.name.localeCompare(b.name)
-            );
-            const badgeClass = i => i === 0 ? 'r1' : i === 1 ? 'r2' : i === 2 ? 'r3' : '';
-            document.getElementById("standing").innerHTML = arr.map((t, i) => `
-<tr class="${i < 6 ? 'top-team' : 'bottom-team'}">
-  <td><span class="rank-badge ${badgeClass(i)}">${i + 1}</span></td>
-  <td class="left team-cell">
-    <img src="${getLogo(t.name)}" width="20">
-    <span class="team-name">${t.name}</span>
-  </td>
-  <td class="mp-val">${t.matchPoint}</td>
-  <td>${t.win} - ${t.lose}</td>
-  <td class="ng-val">${t.netGame}</td>
-  <td>${t.gameWin} - ${t.gameLose}</td>
-</tr>
-`).join("");
+            arr.forEach(t => {
+                t.matchPoint = t.win;      
+                t.netGame = t.gameWin - t.gameLose;
+            });
+
+            arr.sort((a, b) => {
+                if (a.matchPoint !== b.matchPoint) return b.matchPoint - a.matchPoint;
+                if (a.win !== b.win) return b.win - a.win;
+                if (a.netGame !== b.netGame) return b.netGame - a.netGame;
+                if (a.gameWin !== b.gameWin) return b.gameWin - a.gameWin;
+                const h2h = getHeadToHead(a.name, b.name);
+                if (h2h !== 0) return h2h;
+                return a.name.localeCompare(b.name);
+            });
+
+            const tbody = document.getElementById("standing");
+            tbody.innerHTML = arr.map((t, idx) => {
+                const badgeClass = idx === 0 ? 'r1' : idx === 1 ? 'r2' : idx === 2 ? 'r3' : '';
+                const rowClass = idx < 6 ? 'top-team' : 'bottom-team';
+                return `
+                    <tr class="${rowClass}">
+                        <td><span class="rank-badge ${badgeClass}">${idx + 1}</span></td>
+                        <td class="left team-cell">
+                            <img src="${getLogo(t.name)}" width="22" height="22" onerror="this.src='data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2222%22%20height%3D%2222%22%20fill%3D%22%23999%22%3E%3Crect%20width%3D%2222%22%20height%3D%2222%22%20rx%3D%224%22%2F%3E%3C%2Fsvg%3E'">
+                            <span class="team-name">${t.name}</span>
+                        </td>
+                        <td class="mp-val">${t.matchPoint}</td>
+                        <td>${t.win} - ${t.lose}</td>
+                        <td class="ng-val">${t.netGame}</td>
+                        <td>${t.gameWin} - ${t.gameLose}</td>
+                    </tr>
+                `;
+            }).join("");
         }
+
         function saveData() {
             localStorage.setItem("mpl_matches", JSON.stringify(matches));
         }
@@ -567,16 +689,64 @@
             const data = localStorage.getItem("mpl_matches");
             if (data) {
                 matches = JSON.parse(data);
+            } else {
+                matches = [];
             }
         }
+
+        function addMatch() {
+            const week = document.getElementById("week").value;
+            const A = document.getElementById("teamA").value;
+            const B = document.getElementById("teamB").value;
+            const score = document.getElementById("score").value;
+
+            if (A === B) {
+                alert("⚠️ Team tidak boleh sama! Pilih tim yang berbeda.");
+                return;
+            }
+
+            const [aScore, bScore] = score.split("-").map(Number);
+            matches.push({ week, A, B, aScore, bScore });
+            saveData();
+            update();
+        }
+
+        function undoMatch() {
+            if (!matches.length) {
+                alert("❌ Tidak ada match untuk di-undo.");
+                return;
+            }
+            matches.pop();
+            saveData();
+            update();
+        }
+
+        function resetAll() {
+            if (confirm("⚠️ Yakin mau reset semua data? Semua pertandingan akan dihapus.")) {
+                matches = [];
+                localStorage.removeItem("mpl_matches");
+                update();
+            }
+        }
+
+        function loadCurrent() {
+            if (!confirm("📋 Load Current Standings? Ini akan mengganti semua match yang ada dengan data pra-musim (Weeks 1-4). Head-to-head dan stat akan diupdate.")) return;
+            matches = JSON.parse(JSON.stringify(currentMatches));
+            saveData();
+            update();
+        }
+
+        window.addMatch = addMatch;
+        window.undoMatch = undoMatch;
+        window.resetAll = resetAll;
+        window.loadCurrent = loadCurrent;
 
         initTeams();
         populateDropdown();
         populateWeek();
-        loadData();
-        update();
+        loadData();        
+        update();          
     </script>
-
 </body>
 
 </html>
