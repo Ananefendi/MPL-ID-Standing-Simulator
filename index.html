@@ -33,6 +33,13 @@
             margin-bottom: 6px;
             font-weight: 900;
         }
+        .top-team {
+    background-color: #c6ffca; /* hijau soft */
+}
+
+.bottom-team {
+    background-color: #ffc2c2; /* merah soft */
+}
 
         .subtitle-bar {
             display: flex;
@@ -119,9 +126,6 @@
             transition: opacity 0.15s;
         }
 
-        button:hover {
-            opacity: 0.85;
-        }
 
         .btn-add {
             background: #c0392b;
@@ -188,7 +192,6 @@
             text-align: center;
             font-size: 13px;
             color: #222;
-            border-bottom: 0.5px solid #f0f0f0;
         }
 
         td.left {
@@ -199,9 +202,12 @@
             border-bottom: none;
         }
 
-        tbody tr:hover {
-            background: #faf7f5;
-        }
+     
+
+.top-team,
+.bottom-team {
+    transition: 0.2s;
+}
 
         .rank-badge {
             display: inline-flex;
@@ -217,15 +223,15 @@
         }
 
         .rank-badge.r1 {
-            background: #c0392b;
+            background: #1a1a1a;
         }
 
         .rank-badge.r2 {
-            background: #555;
+            background: #1a1a1a;
         }
 
         .rank-badge.r3 {
-            background: #888;
+            background: #1a1a1a;
         }
 
         .mp-val {
@@ -292,12 +298,40 @@
         width: 100%;
     }
 }
+.top-team {
+    box-shadow: inset 0 -5px rgba(255, 255, 255, 0.3);
+}
+
+.bottom-team {
+    box-shadow: inset 0 -5px rgba(255, 255, 255, 0.25);
+}
+.team-cell {
+    display: flex;
+    align-items: center;
+    gap: 6px; 
+}
+
+
+.team-cell img {
+    width: 26px;
+    height: 26px;
+    object-fit: contain;
+}
+
+
+.team-name {
+    font-size: 13px;
+    font-weight: 600;
+}
+td:first-child {
+    width: 50px;
+}
     </style>
 </head>
 
 <body>
 
-    <h2>Peringkat</h2>
+    <h2>STANDINGS</h2>
     <div class="subtitle-bar">
         <div class="subtitle-line"></div>
         <span class="subtitle-text">Regular Season</span>
@@ -309,9 +343,9 @@
             <h3>Input Match</h3>
             <label>Week</label>
             <select id="week"></select>
-            <label>Team A</label>
+            <label>Team 1</label>
             <select id="teamA"></select>
-            <label>Team B</label>
+            <label>Team 2</label>
             <select id="teamB"></select>
             <label>Result</label>
             <select id="score">
@@ -471,23 +505,25 @@
             arr.forEach(t => { t.matchPoint = t.win; t.netGame = t.gameWin - t.gameLose; });
             arr.sort((a, b) =>
                 b.matchPoint - a.matchPoint ||     
-                b.win - a.win ||                  
+                b.win - a.win ||                   
+                b.netGame - a.netGame ||           
                 b.gameWin - a.gameWin ||           
                 a.name.localeCompare(b.name)       
             );
             const badgeClass = i => i === 0 ? 'r1' : i === 1 ? 'r2' : i === 2 ? 'r3' : '';
             document.getElementById("standing").innerHTML = arr.map((t, i) => `
-        <tr>
-          <td><span class="rank-badge ${badgeClass(i)}">${i + 1}</span></td>
-          <td class="left" style="display:flex; align-items:center; gap:8px;">
+<tr class="${i < 6 ? 'top-team' : 'bottom-team'}">
+  <td><span class="rank-badge ${badgeClass(i)}">${i + 1}</span></td>
+  <td class="left team-cell">
     <img src="${getLogo(t.name)}" width="20">
     <span class="team-name">${t.name}</span>
-</td>
-          <td class="mp-val">${t.matchPoint}</td>
-          <td>${t.win} - ${t.lose}</td>
-          <td class="ng-val">${t.netGame}</td>
-          <td>${t.gameWin} - ${t.gameLose}</td>
-        </tr>`).join("");
+  </td>
+  <td class="mp-val">${t.matchPoint}</td>
+  <td>${t.win} - ${t.lose}</td>
+  <td class="ng-val">${t.netGame}</td>
+  <td>${t.gameWin} - ${t.gameLose}</td>
+</tr>
+`).join("");
         }
         function saveData() {
                 localStorage.setItem("mpl_matches", JSON.stringify(matches));
