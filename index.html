@@ -33,13 +33,16 @@
             margin-bottom: 6px;
             font-weight: 900;
         }
-        .top-team {
-    background-color: #c6ffca; /* hijau soft */
-}
 
-.bottom-team {
-    background-color: #ffc2c2; /* merah soft */
-}
+        .top-team {
+            background-color: #c6ffca;
+            /* hijau soft */
+        }
+
+        .bottom-team {
+            background-color: #ffc2c2;
+            /* merah soft */
+        }
 
         .subtitle-bar {
             display: flex;
@@ -70,11 +73,13 @@
         }
 
         .box {
+            display: flex;
             background: white;
             padding: 16px 20px;
             border-radius: 4px;
             border: 0.5px solid #ddd;
             flex: 1;
+            flex-direction: column;
             min-width: 220px;
         }
 
@@ -110,7 +115,7 @@
         .btn-row {
             display: flex;
             gap: 8px;
-            margin-top: 14px;
+            margin-top: 48px;
             flex-wrap: wrap;
         }
 
@@ -143,9 +148,12 @@
         }
 
         #matchList {
+            flex: 1;
+            overflow-y: auto;
             list-style: none;
+            padding-right: 4px;
             padding: 0;
-            max-height: 180px;
+            max-height: 320px;
             overflow-y: auto;
         }
 
@@ -202,12 +210,12 @@
             border-bottom: none;
         }
 
-     
 
-.top-team,
-.bottom-team {
-    transition: 0.2s;
-}
+
+        .top-team,
+        .bottom-team {
+            transition: 0.2s;
+        }
 
         .rank-badge {
             display: inline-flex;
@@ -257,75 +265,81 @@
             font-size: 12px;
             font-style: italic;
         }
+
         @media (max-width: 768px) {
 
-    body {
-        padding: 16px 10px;
-    }
+            body {
+                padding: 16px 10px;
+            }
 
-    h2 {
-        font-size: 20px;
-        letter-spacing: 3px;
-    }
+            h2 {
+                font-size: 20px;
+                letter-spacing: 3px;
+            }
 
-    .container {
-        flex-direction: column;
-    }
+            .container {
+                align-items: stretch;
+                flex-direction: column;
+            }
 
-    .box {
-        width: 100%;
-    }
+            .box {
+                width: 100%;
+            }
 
-    table {
-        font-size: 12px;
-    }
+            table {
+                font-size: 12px;
+            }
 
-    th, td {
-        padding: 8px;
-    }
+            th,
+            td {
+                padding: 8px;
+            }
 
-    table {
-        display: block;
-        overflow-x: auto;
-        white-space: nowrap;
-    }
+            table {
+                display: block;
+                overflow-x: auto;
+                white-space: nowrap;
+            }
 
-    .btn-row {
-        flex-direction: column;
-    }
+            .btn-row {
+                flex-direction: column;
+            }
 
-    button {
-        width: 100%;
-    }
-}
-.top-team {
-    box-shadow: inset 0 -5px rgba(255, 255, 255, 0.3);
-}
+            button {
+                width: 100%;
+            }
+        }
 
-.bottom-team {
-    box-shadow: inset 0 -5px rgba(255, 255, 255, 0.25);
-}
-.team-cell {
-    display: flex;
-    align-items: center;
-    gap: 6px; 
-}
+        .top-team {
+            box-shadow: inset 0 -5px rgba(255, 255, 255, 0.3);
+        }
 
+        .bottom-team {
+            box-shadow: inset 0 -5px rgba(255, 255, 255, 0.25);
+        }
 
-.team-cell img {
-    width: 26px;
-    height: 26px;
-    object-fit: contain;
-}
+        .team-cell {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
 
 
-.team-name {
-    font-size: 13px;
-    font-weight: 600;
-}
-td:first-child {
-    width: 50px;
-}
+        .team-cell img {
+            width: 26px;
+            height: 26px;
+            object-fit: contain;
+        }
+
+
+        .team-name {
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        td:first-child {
+            width: 50px;
+        }
     </style>
 </head>
 
@@ -402,41 +416,41 @@ td:first-child {
         }
 
         function addMatch() {
-                const week = document.getElementById("week").value;
-                const A = document.getElementById("teamA").value;
-                const B = document.getElementById("teamB").value;
-                const score = document.getElementById("score").value;
+            const week = document.getElementById("week").value;
+            const A = document.getElementById("teamA").value;
+            const B = document.getElementById("teamB").value;
+            const score = document.getElementById("score").value;
 
-                if (A === B) {
-                    alert("Team tidak boleh sama");
-                    return;
-                }
-
-                const [aScore, bScore] = score.split("-").map(Number);
-
-                matches.push({ week, A, B, aScore, bScore });
-                saveData(); // 🔥 penting
-                update();
+            if (A === B) {
+                alert("Team tidak boleh sama");
+                return;
             }
+
+            const [aScore, bScore] = score.split("-").map(Number);
+
+            matches.push({ week, A, B, aScore, bScore });
+            saveData(); // 🔥 penting
+            update();
+        }
 
         function undoMatch() {
-                if (!matches.length) {
-                    alert("Tidak ada match untuk di-undo");
-                    return;
-                }
-
-                matches.pop();
-                saveData(); // 🔥
-                update();
+            if (!matches.length) {
+                alert("Tidak ada match untuk di-undo");
+                return;
             }
+
+            matches.pop();
+            saveData(); // 🔥
+            update();
+        }
 
         function resetAll() {
-                if (confirm("Yakin mau reset semua data?")) {
-                    matches = [];
-                    localStorage.removeItem("mpl_matches"); 
-                    update();
-                }
+            if (confirm("Yakin mau reset semua data?")) {
+                matches = [];
+                localStorage.removeItem("mpl_matches");
+                update();
             }
+        }
 
         function update() {
             initTeams();
@@ -450,28 +464,28 @@ td:first-child {
         }
 
         function renderMatch() {
-                const list = document.getElementById("matchList");
+            const list = document.getElementById("matchList");
 
-                if (!matches.length) {
-                    list.innerHTML = '<li class="empty-note">No matches yet.</li>';
-                    return;
-                }
+            if (!matches.length) {
+                list.innerHTML = '<li class="empty-note">No matches yet.</li>';
+                return;
+            }
 
-            
-                let grouped = {};
 
-                matches.forEach(m => {
-                    if (!grouped[m.week]) grouped[m.week] = [];
-                    grouped[m.week].push(m);
-                });
+            let grouped = {};
 
-                let html = "";
+            matches.forEach(m => {
+                if (!grouped[m.week]) grouped[m.week] = [];
+                grouped[m.week].push(m);
+            });
 
-                Object.keys(grouped).forEach(week => {
-                    html += `<li style="margin-top:10px; font-weight:bold;">${week}</li>`;
+            let html = "";
 
-                    grouped[week].forEach(m => {
-                        html += `
+            Object.keys(grouped).forEach(week => {
+                html += `<li style="margin-top:10px; font-weight:bold;">${week}</li>`;
+
+                grouped[week].forEach(m => {
+                    html += `
             <li style="display:flex; align-items:center; gap:6px;">
                 <img src="${getLogo(m.A)}" width="16">
                 ${m.A}
@@ -479,36 +493,56 @@ td:first-child {
                 <img src="${getLogo(m.B)}" width="16">
                 ${m.B}
             </li>`;
-                    });
+                });
+            });
+
+            list.innerHTML = html;
+        }
+        function getHeadToHead(a, b) {
+                let aWin = 0;
+                let bWin = 0;
+
+                matches.forEach(m => {
+                    if (m.A === a && m.B === b) {
+                        if (m.aScore > m.bScore) aWin++;
+                        else bWin++;
+                    }
+                    if (m.A === b && m.B === a) {
+                        if (m.bScore > m.aScore) aWin++;
+                        else bWin++;
+                    }
                 });
 
-                list.innerHTML = html;
+                if (aWin > bWin) return -1; // a di atas
+                if (bWin > aWin) return 1;  // b di atas
+                return 0; // masih imbang
             }
-            function getLogo(team) {
-                    const logos = {
-                        "ONIC": "logo/onic.png",
-                        "TEAM LIQUID ID": "logo/tlid.png",
-                        "DEWA UNITED": "logo/dewa.png",
-                        "GEEK FAM": "logo/geek.png",
-                        "BIGETRON": "logo/btr.png",
-                        "ALTER EGO": "logo/ae.png",
-                        "EVOS": "logo/evos.png",
-                        "NAVI": "logo/navi.png",
-                        "RRQ": "logo/rrq.png"
-                    };
+        function getLogo(team) {
+            const logos = {
+                "ONIC": "logo/onic.png",
+                "TEAM LIQUID ID": "logo/tlid.png",
+                "DEWA UNITED": "logo/dewa.png",
+                "GEEK FAM": "logo/geek.png",
+                "BIGETRON": "logo/btr.png",
+                "ALTER EGO": "logo/ae.png",
+                "EVOS": "logo/evos.png",
+                "NAVI": "logo/navi.png",
+                "RRQ": "logo/rrq.png"
+            };
 
-                    return logos[team] || "logo/default.png";
-                }
+            return logos[team] || "logo/default.png";
+        }
 
         function renderTable() {
             const arr = Object.values(teams);
             arr.forEach(t => { t.matchPoint = t.win; t.netGame = t.gameWin - t.gameLose; });
             arr.sort((a, b) =>
-                b.matchPoint - a.matchPoint ||     
-                b.win - a.win ||                   
-                b.netGame - a.netGame ||           
-                b.gameWin - a.gameWin ||           
-                a.name.localeCompare(b.name)       
+                b.matchPoint - a.matchPoint ||
+                b.win - a.win ||
+                b.netGame - a.netGame ||
+                b.gameWin - a.gameWin ||
+                getHeadToHead(a.name, b.name) || // 🔥 INI KUNCI
+                a.name.localeCompare(b.name)
             );
             const badgeClass = i => i === 0 ? 'r1' : i === 1 ? 'r2' : i === 2 ? 'r3' : '';
             document.getElementById("standing").innerHTML = arr.map((t, i) => `
@@ -526,21 +560,21 @@ td:first-child {
 `).join("");
         }
         function saveData() {
-                localStorage.setItem("mpl_matches", JSON.stringify(matches));
-            }
+            localStorage.setItem("mpl_matches", JSON.stringify(matches));
+        }
 
-            function loadData() {
-                const data = localStorage.getItem("mpl_matches");
-                if (data) {
-                    matches = JSON.parse(data);
-                }
+        function loadData() {
+            const data = localStorage.getItem("mpl_matches");
+            if (data) {
+                matches = JSON.parse(data);
             }
+        }
 
         initTeams();
-            populateDropdown();
-            populateWeek();
-            loadData(); 
-            update();
+        populateDropdown();
+        populateWeek();
+        loadData();
+        update();
     </script>
 
 </body>
