@@ -3,6 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MPL Standing Simulator</title>
     <style>
         * {
@@ -250,6 +251,47 @@
             font-size: 12px;
             font-style: italic;
         }
+        @media (max-width: 768px) {
+
+    body {
+        padding: 16px 10px;
+    }
+
+    h2 {
+        font-size: 20px;
+        letter-spacing: 3px;
+    }
+
+    .container {
+        flex-direction: column;
+    }
+
+    .box {
+        width: 100%;
+    }
+
+    table {
+        font-size: 12px;
+    }
+
+    th, td {
+        padding: 8px;
+    }
+
+    table {
+        display: block;
+        overflow-x: auto;
+        white-space: nowrap;
+    }
+
+    .btn-row {
+        flex-direction: column;
+    }
+
+    button {
+        width: 100%;
+    }
+}
     </style>
 </head>
 
