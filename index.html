@@ -1,747 +1,929 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>MPL Standing Simulator | Season Tracker</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MPL Season 17 Standings</title>
     <style>
         * {
             box-sizing: border-box;
             margin: 0;
-            padding: 0;
+            padding: 0
+        }
+
+        :root {
+            --red: #ffa600;
+            --red2: #e74c3c;
+            --gold: #E8A020;
+            --gold2: #f0b429;
+            --bg: #0d0d0d;
+            --bg2: #161616;
+            --bg3: #1e1e1e;
+            --bg4: #252525;
+            --text: #f5f0e8;
+            --text2: #c8b99a;
+            --text3: #8a7a66;
+            --border: #2e2e2e;
+            --border2: #3a3a3a;
         }
 
         body {
-            font-family: 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-            background: #f5f0eb;
+            background: var(--bg);
+            color: var(--text);
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            font-size: 13px;
             min-height: 100vh;
-            padding: 32px 24px;
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='400' opacity='0.07'%3E%3Cpath d='M200 50 C120 80 60 160 80 240 C100 320 180 360 200 350 C220 360 300 320 320 240 C340 160 280 80 200 50Z' fill='%23c0392b' stroke='none'/%3E%3C/svg%3E");
-            background-size: 600px;
-            background-position: right center;
-            background-repeat: no-repeat;
+            padding: 0
         }
 
-        h2 {
-            text-align: center;
-            font-family: 'Arial Black', Arial, sans-serif;
-            font-size: 28px;
-            letter-spacing: 6px;
-            text-transform: uppercase;
-            color: #1a1a1a;
-            margin-bottom: 6px;
-            font-weight: 900;
+        .app {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh
         }
 
-        .top-team {
-            background-color: #c6ffca;
-            /* soft green */
+        /* TOP BAR */
+        .topbar {
+            background: #0a0a0a;
+            border-bottom: 2px solid var(--red);
+            padding: 10px 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            flex-wrap: wrap
         }
 
-        .bottom-team {
-            background-color: #ffc2c2;
-            /* soft red */
+        .topbar-brand {
+            display: flex;
+            align-items: center;
+            gap: 10px
         }
 
-        .subtitle-bar {
+        .topbar-logo {
+            width: 32px;
+            height: 32px;
+            background: var(--red);
+            border-radius: 6px;
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 12px;
-            margin-bottom: 28px;
-        }
-
-        .subtitle-line {
-            height: 2px;
-            width: 60px;
-            background: #c0392b;
-        }
-
-        .subtitle-text {
+            font-weight: 700;
             font-size: 13px;
-            color: #555;
+            color: #fff;
+            letter-spacing: 1px;
+            flex-shrink: 0
+        }
+
+        .topbar-title {
+            font-size: 15px;
+            font-weight: 700;
+            color: #fff;
             letter-spacing: 2px;
-            text-transform: uppercase;
+            text-transform: uppercase
         }
 
-        .container {
-            display: flex;
-            gap: 20px;
-            flex-wrap: wrap;
-            margin-bottom: 24px;
+        .topbar-sub {
+            font-size: 10px;
+            color: var(--text3);
+            letter-spacing: 1px
         }
 
-        .box {
+        .tab-bar {
             display: flex;
-            background: white;
-            padding: 16px 20px;
+            gap: 4px
+        }
+
+        .tab-btn {
+            background: transparent;
+            border: 1px solid var(--border2);
+            color: var(--text3);
+            padding: 6px 14px;
             border-radius: 4px;
-            border: 0.5px solid #ddd;
-            flex: 1;
-            flex-direction: column;
-            min-width: 220px;
-        }
-
-        .box h3 {
-            font-size: 13px;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            color: #888;
-            margin-bottom: 14px;
-            font-weight: 700;
-        }
-
-        label {
-            font-size: 12px;
-            color: #888;
-            display: block;
-            margin-top: 10px;
-            margin-bottom: 3px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        select {
-            width: 100%;
-            padding: 7px 10px;
-            border: 0.5px solid #ccc;
-            border-radius: 3px;
-            font-size: 13px;
-            background: white;
-            color: #222;
-        }
-
-        .btn-row {
-            display: flex;
-            gap: 8px;
-            margin-top: 48px;
-            flex-wrap: wrap;
-            align-items: center;
-        }
-
-        .btn-current {
-            background: #2c3e50;
-            color: white;
-        }
-
-        button {
-            padding: 8px 16px;
-            border: none;
-            border-radius: 3px;
-            font-size: 12px;
-            font-weight: 700;
-            letter-spacing: 1px;
-            text-transform: uppercase;
+            font-size: 11px;
+            font-weight: 600;
             cursor: pointer;
-            transition: opacity 0.15s, transform 0.05s;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            transition: .15s
         }
 
-        button:active {
-            transform: scale(0.97);
+        .tab-btn.active {
+            background: var(--red);
+            border-color: var(--red);
+            color: #fff
         }
 
-        .btn-add {
-            background: #c0392b;
-            color: white;
+        .tab-btn:hover:not(.active) {
+            border-color: var(--text3);
+            color: var(--text2)
         }
 
-        .btn-undo {
-            background: #555;
-            color: white;
+        /* WEEK NAV */
+        .week-nav {
+            background: var(--bg2);
+            border-bottom: 1px solid var(--border);
+            padding: 10px 16px;
+            overflow-x: auto;
+            white-space: nowrap
         }
 
-        .btn-reset {
-            background: #ddd;
-            color: #555;
-        }
-
-        /* INFO ICON & TOOLTIP STYLES */
-        .info-wrapper {
+        .week-nav-inner {
             display: inline-flex;
+            gap: 6px;
+            align-items: center
+        }
+
+        .week-dot-btn {
+            display: inline-flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            cursor: pointer;
+            padding: 4px 8px;
+            border-radius: 4px;
+            transition: .15s;
+            background: transparent;
+            border: none
+        }
+
+        .week-dot-btn:hover .wlabel {
+            color: var(--text2)
+        }
+
+        .week-dot-btn.active .wlabel {
+            color: var(--red)
+        }
+
+        .week-dot-btn.active .wdot {
+            background: var(--red)
+        }
+
+        .wlabel {
+            font-size: 10px;
+            color: var(--text3);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: .5px
+        }
+
+        .wdot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--border2);
+            transition: .15s
+        }
+
+        .week-connector {
+            width: 28px;
+            height: 1px;
+            background: var(--border);
+            align-self: flex-end;
+            margin-bottom: 8px
+        }
+
+        /* MAIN CONTENT */
+        .main-panel {
+            display: flex;
+            flex: 1;
+            gap: 0;
+            overflow: hidden
+        }
+
+        .schedule-panel,
+        .standings-panel {
+            overflow-y: auto
+        }
+
+        /* SCHEDULE PANEL */
+        .schedule-panel {
+            flex: 1;
+            min-width: 0;
+            border-right: 1px solid var(--border);
+            max-height: calc(100vh - 110px)
+        }
+
+        .panel-header {
+            background: var(--bg2);
+            padding: 12px 16px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 8px;
+            flex-wrap: wrap;
+            position: sticky;
+            top: 0;
+            z-index: 5
+        }
+
+        .panel-title {
+            font-size: 12px;
+            font-weight: 700;
+            color: var(--text2);
+            letter-spacing: 2px;
+            text-transform: uppercase
+        }
+
+        .actions {
+            display: flex;
+            gap: 6px
+        }
+
+        .act-btn {
+            background: transparent;
+            border: 1px solid var(--border2);
+            color: var(--text3);
+            padding: 5px 12px;
+            border-radius: 3px;
+            font-size: 11px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: .15s
+        }
+
+        .act-btn:hover {
+            border-color: var(--text2);
+            color: var(--text)
+        }
+
+        .act-btn.danger {
+            border-color: #6b1a1a;
+            color: #c0392b
+        }
+
+        .act-btn.danger:hover {
+            background: var(--red);
+            color: #fff
+        }
+
+        .schedule-content {
+            padding: 12px
+        }
+
+        /* DAY SECTION */
+        .day-section {
+            margin-bottom: 20px
+        }
+
+        .day-header {
+            padding: 6px 12px;
+            margin-bottom: 8px;
+            border-left: 3px solid var(--red);
+            background: var(--bg3)
+        }
+
+        .day-label {
+            font-size: 10px;
+            font-weight: 700;
+            color: var(--text2);
+            letter-spacing: 2px;
+            text-transform: uppercase
+        }
+
+        /* MATCH CARD */
+        .match-card {
+            background: var(--bg3);
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            padding: 10px 12px;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-wrap: wrap
+        }
+
+        .match-teams {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex: 1;
+            min-width: 0
+        }
+
+        .team-chip {
+            display: flex;
             align-items: center;
             gap: 6px;
-            background: transparent;
+            background: var(--bg4);
+            padding: 4px 10px 4px 6px;
+            border-radius: 3px;
+            min-width: 0;
+            flex-shrink: 1
         }
 
-        .icon-info {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            background: #6996d4;
-            color: white;
-            font-size: 13px;
-            font-weight: bold;
+        .team-chip img {
             width: 22px;
             height: 22px;
+            object-fit: contain;
             border-radius: 50%;
-            cursor: help;
-            transition: background 0.2s;
-            font-family: monospace;
-            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+            background: #222;
+            padding: 1px;
+            flex-shrink: 0
         }
 
-        .icon-info:hover {
-            background: #2c3e50;
-        }
-
-        /* custom tooltip (no extra library) */
-        .tooltip-hint {
-            position: relative;
-            display: inline-flex;
-        }
-
-        .tooltip-hint .tooltip-text {
-            visibility: hidden;
-            opacity: 0;
-            background-color: #1e2a36;
-            color: #f0f0f0;
-            text-align: left;
-            border-radius: 8px;
-            padding: 8px 12px;
-            position: absolute;
-            z-index: 20;
-            bottom: 135%;
-            left: 50%;
-            transform: translateX(-50%);
-            white-space: normal;
-            width: 260px;
+        .team-chip span {
+            font-weight: 700;
             font-size: 11px;
-            font-weight: normal;
-            letter-spacing: 0.3px;
-            text-transform: none;
-            font-family: 'Segoe UI', Arial, sans-serif;
-            line-height: 1.4;
-            box-shadow: 0 5px 12px rgba(0, 0, 0, 0.2);
-            transition: opacity 0.2s, visibility 0.2s;
-            pointer-events: none;
-            backdrop-filter: blur(2px);
-            background: #1e2a36e6;
+            color: var(--text);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis
         }
 
-        .tooltip-hint .tooltip-text::after {
-            content: "";
-            position: absolute;
-            top: 100%;
-            left: 50%;
-            margin-left: -6px;
-            border-width: 6px;
-            border-style: solid;
-            border-color: #1e2a36 transparent transparent transparent;
+        .vs-badge {
+            font-size: 10px;
+            font-weight: 800;
+            color: var(--red);
+            background: #1a0a0a;
+            padding: 2px 8px;
+            border-radius: 2px;
+            flex-shrink: 0
         }
 
-        .tooltip-hint:hover .tooltip-text {
-            visibility: visible;
-            opacity: 1;
+        .score-wrap {
+            flex-shrink: 0
         }
 
-        #matchList {
-            flex: 1;
-            overflow-y: auto;
-            list-style: none;
-            padding-right: 4px;
-            padding: 0;
-            max-height: 320px;
-            overflow-y: auto;
+        .score-sel {
+            background: var(--bg4);
+            border: 1px solid var(--border2);
+            color: var(--gold);
+            font-weight: 800;
+            font-size: 13px;
+            padding: 5px 8px;
+            border-radius: 3px;
+            cursor: pointer;
+            font-family: monospace;
+            width: 76px;
+            text-align: center
         }
 
-        #matchList li {
-            font-size: 12px;
-            padding: 5px 0;
-            border-bottom: 0.5px solid #eee;
-            color: #444;
+        .score-sel:hover,
+        .score-sel:focus {
+            border-color: var(--red);
+            outline: none
         }
+
+        /* STANDINGS PANEL */
+        .standings-panel {
+            flex: 1.4;
+            min-width: 0;
+            max-height: calc(100vh - 110px)
+        }
+
+        .standings-content {
+            overflow-x: auto
+        }
+
 
         table {
             width: 100%;
             border-collapse: collapse;
-            background: white;
-            border-radius: 4px;
-            overflow: hidden;
-            border: 0.5px solid #ddd;
+            font-size: 12px
         }
 
         thead tr {
-            background: #1a1a1a;
+            background: var(--bg2);
+            border-bottom: 2px solid var(--red)
         }
 
         th {
-            padding: 12px 14px;
+            padding: 12px 10px;
             text-align: center;
-            font-size: 11px;
+            font-size: 10px;
             letter-spacing: 2px;
             text-transform: uppercase;
-            color: #ffffff;
-            font-weight: 700;
+            color: var(--text3);
+            font-weight: 700
         }
 
-        th.red {
-            color: #e74c3c;
-        }
-
-        th.left {
-            text-align: left;
+        th:nth-child(2) {
+            text-align: left
         }
 
         td {
-            padding: 11px 14px;
+            padding: 10px 10px;
             text-align: center;
-            font-size: 13px;
-            color: #222;
+            border-bottom: 1px solid var(--border);
+            color: var(--text)
         }
 
-        td.left {
-            text-align: left;
+        td:nth-child(2) {
+            text-align: left
         }
 
-        tbody tr:last-child td {
-            border-bottom: none;
+        tbody tr:hover {
+            background: rgba(255, 255, 255, .03)
         }
 
-        .rank-badge {
+        .rank-cell {
             display: inline-flex;
             align-items: center;
             justify-content: center;
             width: 26px;
             height: 26px;
-            background: #1a1a1a;
-            color: white;
-            border-radius: 3px;
-            font-size: 13px;
+            border-radius: 4px;
+            font-weight: 800;
+            font-size: 12px;
+            background: var(--bg4);
+            color: var(--text3)
+        }
+
+        .rank-cell.r1 {
+            background: var(--gold);
+            color: #1a1000
+        }
+
+        .rank-cell.r2 {
+            background: #4a4a4a;
+            color: #ddd
+        }
+
+        .rank-cell.r3 {
+            background: #3d2a10;
+            color: #c8944a
+        }
+
+        .team-cell-inner {
+            display: flex;
+            align-items: center;
+            gap: 8px
+        }
+
+        .team-cell-inner img {
+            width: 24px;
+            height: 24px;
+            object-fit: contain;
+            border-radius: 50%;
+            background: var(--bg4);
+            padding: 2px
+        }
+
+        .team-name-s {
             font-weight: 700;
-        }
-
-        .rank-badge.r1 {
-            background: #1a1a1a;
-        }
-
-        .rank-badge.r2 {
-            background: #1a1a1a;
-        }
-
-        .rank-badge.r3 {
-            background: #1a1a1a;
+            font-size: 12px
         }
 
         .mp-val {
-            color: #c0392b;
+            font-weight: 800;
+            color: var(--red);
+            font-size: 14px
+        }
+
+        .ng-pos {
+            color: #ffa600;
+            font-weight: 700
+        }
+
+        .ng-neg {
+            color: var(--red);
+            font-weight: 700
+        }
+
+        .top-row {
+            background: rgba(74, 222, 128, .04)
+        }
+
+        .bot-row {
+            background: rgba(192, 57, 43, .06)
+        }
+
+        /* MOBILE */
+        @media(max-width:700px) {
+            .main-panel {
+                flex-direction: column
+            }
+
+            .schedule-panel,
+            .standings-panel {
+                max-height: none;
+                border-right: none;
+                border-bottom: 1px solid var(--border)
+            }
+            
+            
+
+            .schedule-panel.hidden,
+            .standings-panel.hidden {
+                display: none
+            }
+
+            .topbar-title {
+                font-size: 12px
+            }
+        }
+
+        @media(min-width:701px) {
+            .tab-bar {
+                display: none
+            }
+
+            .schedule-panel,
+            .standings-panel {
+                display: block !important
+            }
+        }
+
+        .info-bar {
+            background: var(--bg2);
+            padding: 8px 16px;
+            border-bottom: 1px solid var(--border);
+            font-size: 10px;
+            color: var(--text3);
+            letter-spacing: .5px
+        }
+
+        .week-group-label {
+            font-size: 10px;
             font-weight: 700;
-            font-size: 14px;
+            color: var(--red);
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            padding: 4px 12px;
+            background: #1a0606;
+            border: 1px solid #3a1010;
+            border-radius: 3px;
+            margin-bottom: 8px;
+            display: inline-block
         }
+        #teamFilter {
+    background: var(--bg3);
+    color: var(--red);
+    border: 1px solid var(--border);
+    padding: 4px 8px;
+    border-radius: 4px;
+    outline: none;
+    font-size: 12px;
+}
 
-        .ng-val {
-            color: #c0392b;
-            font-weight: 700;
-            font-size: 14px;
-        }
+#teamFilter option {
+    background: var(--bg3);
+    color: var(--red);
+}
 
-        .team-name {
-            font-weight: 600;
-            font-size: 13px;
-            letter-spacing: 0.5px;
-        }
+/* rapetin kolom rank */
+th:first-child,
+td:first-child {
+    width: 40px;
+    padding-left: 6px;
+    padding-right: 6px;
+}
 
-        .empty-note {
-            color: #aaa;
-            font-size: 12px;
-            font-style: italic;
-        }
+/* rapetin kolom tim */
+th:nth-child(2),
+td:nth-child(2) {
+    padding-left: 4px;
+}
 
-        @media (max-width: 768px) {
-            body {
-                padding: 16px 10px;
-            }
+/* kecilkan jarak logo dan text */
+.team-cell-inner {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
 
-            h2 {
-                font-size: 20px;
-                letter-spacing: 3px;
-            }
+/* kecilkan logo sedikit */
+.team-cell-inner img {
+    width: 20px;
+    height: 20px;
+}
 
-            .container {
-                align-items: stretch;
-                flex-direction: column;
-            }
-
-            .box {
-                width: 100%;
-            }
-
-            table {
-                font-size: 12px;
-                display: block;
-                overflow-x: auto;
-                white-space: nowrap;
-            }
-
-            .btn-row {
-                flex-direction: column;
-                align-items: stretch;
-            }
-
-            button {
-                width: 100%;
-            }
-
-            .info-wrapper {
-                justify-content: center;
-            }
-
-            .tooltip-hint .tooltip-text {
-                width: 220px;
-                font-size: 10px;
-                left: 50%;
-                transform: translateX(-50%);
-                bottom: 145%;
-            }
-        }
-
-        .top-team,
-        .bottom-team {
-            transition: 0.2s;
-        }
-
-        .team-cell {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-
-        .team-cell img {
-            width: 26px;
-            height: 26px;
-            object-fit: contain;
-        }
-
-        td:first-child {
-            width: 50px;
-        }
+/* rapetin padding row */
+td {
+    padding: 8px 8px;
+}
     </style>
 </head>
 
 <body>
 
-    <h2>STANDINGS</h2>
-    <div class="subtitle-bar">
-        <div class="subtitle-line"></div>
-        <span class="subtitle-text">Regular Season</span>
-        <div class="subtitle-line"></div>
-    </div>
+    <div class="app">
+        <div class="topbar">
+            <div class="topbar-brand">
+                
+                <div>
+                    <div class="topbar-title">MPL Season 17 Standings</div>
+                    <div class="topbar-sub">Regular Season</div>
+                </div>
+            </div>
+            <div class="tab-bar">
+                <button class="tab-btn active" id="tabSched" onclick="switchTab('schedule')">Schedule</button>
+                <button class="tab-btn" id="tabStand" onclick="switchTab('standings')">Standings</button>
+            </div>
+        </div>
 
-    <div class="container">
-        <div class="box">
-            <h3>Input Match</h3>
-            <label>Week</label>
-            <select id="week"></select>
-            <label>Team 1</label>
-            <select id="teamA"></select>
-            <label>Team 2</label>
-            <select id="teamB"></select>
-            <label>Result</label>
-            <select id="score">
-                <option value="2-0">2 - 0</option>
-                <option value="2-1">2 - 1</option>
-                <option value="1-2">1 - 2</option>
-                <option value="0-2">0 - 2</option>
-            </select>
-            <div class="btn-row">
-                <button class="btn-add" onclick="addMatch()">Add Match</button>
-                <button class="btn-undo" onclick="undoMatch()">Undo</button>
-                <button class="btn-reset" onclick="resetAll()">Reset</button>
-                <div class="info-wrapper">
-                    <button class="btn-current" onclick="loadCurrent()">Load Current Standings</button>
-                    <div class="tooltip-hint">
-                        <span class="icon-info" aria-label="information">i</span>
-                        <span class="tooltip-text">
-                            ⚡ <strong>Load Current Standings</strong> — instantly loads pre-defined MPL matches (Weeks
-                            1-4).
-                            Includes real simulated results for MPL ID Teams. Overwrites current match
-                            list.
-                            Perfect to see example standings with head-to-head tiebreaker!
-                        </span>
+        <div class="week-nav">
+            <div class="week-nav-inner" id="weekNav"></div>
+        </div>
+
+        <div class="main-panel">
+            <div class="schedule-panel" id="schedulePanel">
+                <div class="panel-header">
+                    <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
+                        <span class="panel-title">Match Schedule</span>
+                    
+                        <select id="teamFilter" class="act-btn" style="padding:4px 8px;">
+                            <option value="ALL">All Teams</option>
+                        </select>
                     </div>
+                    <div class="actions">
+                        <button class="act-btn" id="resetBtn">Currrent Standings</button>
+                        <button class="act-btn danger" id="clearBtn">Reset</button>
+                    </div>
+                </div>
+                <!-- <div class="info-bar">Klik dropdown skor → klasemen diperbarui otomatis berdasarkan BO3 + head-to-head
+                </div> -->
+                <div class="schedule-content" id="schedContent"></div>
+            </div>
+            <div class="standings-panel" id="standingsPanel">
+                <div class="panel-header">
+                    <span class="panel-title">Standings</span>
+                </div>
+                <div class="standings-content">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Tim</th>
+                                <th style="color:var(--red)">Match Pts</th>
+                                <th>Match W-L</th>
+                                <th style="color:var(--red)">Net Game</th>
+                                <th>Game W-L</th>
+                            </tr>
+                        </thead>
+                        <tbody id="standBody"></tbody>
+                    </table>
                 </div>
             </div>
         </div>
-        <div class="box">
-            <h3>Match List</h3>
-            <ul id="matchList">
-                <li class="empty-note">No matches yet.</li>
-            </ul>
-        </div>
     </div>
 
-    <table>
-        <thead>
-            <tr>
-                <th></th>
-                <th class="left">Team</th>
-                <th class="red">Match Point</th>
-                <th>Match W-L</th>
-                <th class="red">Net Game Win</th>
-                <th>Game W-L</th>
-            </tr>
-        </thead>
-        <tbody id="standing"></tbody>
-    </table>
-
     <script>
-        const teamNames = ["ONIC", "TEAM LIQUID ID", "DEWA UNITED", "GEEK FAM", "BIGETRON", "ALTER EGO", "EVOS", "NAVI", "RRQ"];
+        const TEAMS = ["ONIC", "TEAM LIQUID ID", "DEWA UNITED", "GEEK FAM", "BIGETRON BY VIT", "ALTER EGO ESPORTS", "EVOS", "NAVI", "RRQ"];
+        const LOGOS = {
+            "ONIC": "logo/onic.png",
+            "TEAM LIQUID ID": "logo/tlid.png",
+            "DEWA UNITED": "logo/dewa.png",
+            "GEEK FAM": "logo/geek.png",
+            "ALTER EGO ESPORTS": "logo/ae.png",
+            "EVOS": "logo/evos.png",
+            "NAVI": "logo/navi.png",
+            "RRQ": "logo/rrq.png", 
+            "BIGETRON BY VIT" : "logo/btr.png"
+        };
+        function logo(t) { return LOGOS[t] || ""; }
 
-        const currentMatches = [
-            { week: "Week 1", A: "BIGETRON", B: "ALTER EGO", aScore: 2, bScore: 1 },
-            { week: "Week 1", A: "NAVI", B: "RRQ", aScore: 2, bScore: 0 },
-            { week: "Week 1", A: "EVOS", B: "GEEK FAM", aScore: 2, bScore: 0 },
-            { week: "Week 1", A: "ALTER EGO", B: "ONIC", aScore: 0, bScore: 2 },
-            { week: "Week 1", A: "TEAM LIQUID ID", B: "NAVI", aScore: 2, bScore: 1 },
-            { week: "Week 1", A: "DEWA UNITED", B: "BIGETRON", aScore: 2, bScore: 0 },
-            { week: "Week 1", A: "EVOS", B: "TEAM LIQUID ID", aScore: 0, bScore: 2 },
-            { week: "Week 1", A: "RRQ", B: "ONIC", aScore: 0, bScore: 2 },
-    
-            { week: "Week 2", A: "ONIC", B: "GEEK FAM", aScore: 2, bScore: 0 },
-            { week: "Week 2", A: "DEWA UNITED", B: "NAVI", aScore: 2, bScore: 0 },
-            { week: "Week 2", A: "GEEK FAM", B: "BIGETRON", aScore: 2, bScore: 0 },
-            { week: "Week 2", A: "ALTER EGO", B: "EVOS", aScore: 2, bScore: 1 },
-            { week: "Week 2", A: "TEAM LIQUID ID", B: "DEWA UNITED", aScore: 2, bScore: 1 },
-            { week: "Week 2", A: "NAVI", B: "ALTER EGO", aScore: 1, bScore: 2 },
-            { week: "Week 2", A: "RRQ", B: "TEAM LIQUID ID", aScore: 0, bScore: 2 },
-            { week: "Week 2", A: "BIGETRON", B: "EVOS", aScore: 2, bScore: 1 },
-         
-            { week: "Week 3", A: "ONIC", B: "DEWA UNITED", aScore: 2, bScore: 1 },
-            { week: "Week 3", A: "NAVI", B: "EVOS", aScore: 0, bScore: 2 },
-            { week: "Week 3", A: "TEAM LIQUID ID", B: "GEEK FAM", aScore: 0, bScore: 2 },
-            { week: "Week 3", A: "ONIC", B: "BIGETRON", aScore: 1, bScore: 2 },
-            { week: "Week 3", A: "RRQ", B: "ALTER EGO", aScore: 1, bScore: 2 },
-            { week: "Week 3", A: "BIGETRON", B: "NAVI", aScore: 1, bScore: 2 },
-            { week: "Week 3", A: "GEEK FAM", B: "RRQ", aScore: 2, bScore: 1 },
-            { week: "Week 3", A: "ALTER EGO", B: "DEWA UNITED", aScore: 0, bScore: 2 },
+        const DEFAULT = [
+            { week: "Week 1", day: "Day 1", A: "BIGETRON BY VIT", B: "ALTER EGO ESPORTS", aScore: 2, bScore: 1 },
+            { week: "Week 1", day: "Day 1", A: "NAVI", B: "RRQ", aScore: 2, bScore: 0 },
+            { week: "Week 1", day: "Day 2", A: "EVOS", B: "GEEK FAM", aScore: 2, bScore: 0 },
+            { week: "Week 1", day: "Day 2", A: "ALTER EGO ESPORTS", B: "ONIC", aScore: 0, bScore: 2 },
+            { week: "Week 1", day: "Day 3", A: "TEAM LIQUID ID", B: "NAVI", aScore: 2, bScore: 1 },
+            { week: "Week 1", day: "Day 3", A: "DEWA UNITED", B: "BIGETRON BY VIT", aScore: 2, bScore: 0 },
+            { week: "Week 1", day: "Day 3", A: "EVOS", B: "TEAM LIQUID ID", aScore: 0, bScore: 2 },
+            { week: "Week 1", day: "Day 3", A: "RRQ", B: "ONIC", aScore: 0, bScore: 2 },
+
+            { week: "Week 2", day: "Day 1", A: "ONIC", B: "GEEK FAM", aScore: 2, bScore: 0 },
+            { week: "Week 2", day: "Day 1", A: "DEWA UNITED", B: "NAVI", aScore: 2, bScore: 0 },
+            { week: "Week 2", day: "Day 2", A: "GEEK FAM", B: "BIGETRON BY VIT", aScore: 2, bScore: 0 },
+            { week: "Week 2", day: "Day 2", A: "ALTER EGO ESPORTS", B: "EVOS", aScore: 2, bScore: 1 },
+            { week: "Week 2", day: "Day 3", A: "TEAM LIQUID ID", B: "DEWA UNITED", aScore: 2, bScore: 1 },
+            { week: "Week 2", day: "Day 3", A: "NAVI", B: "ALTER EGO ESPORTS", aScore: 1, bScore: 2 },
+            { week: "Week 2", day: "Day 3", A: "RRQ", B: "TEAM LIQUID ID", aScore: 0, bScore: 2 },
+            { week: "Week 2", day: "Day 3", A: "BIGETRON BY VIT", B: "EVOS", aScore: 2, bScore: 1 },
+
+            { week: "Week 3", day: "Day 1", A: "ONIC", B: "DEWA UNITED", aScore: 2, bScore: 1 },
+            { week: "Week 3", day: "Day 1", A: "NAVI", B: "EVOS", aScore: 0, bScore: 2 },
+            { week: "Week 3", day: "Day 2", A: "TEAM LIQUID ID", B: "GEEK FAM", aScore: 0, bScore: 2 },
+            { week: "Week 3", day: "Day 2", A: "ONIC", B: "BIGETRON BY VIT", aScore: 1, bScore: 2 },
+            { week: "Week 3", day: "Day 3", A: "RRQ", B: "ALTER EGO ESPORTS", aScore: 1, bScore: 2 },
+            { week: "Week 3", day: "Day 3", A: "BIGETRON BY VIT", B: "NAVI", aScore: 1, bScore: 2 },
+            { week: "Week 3", day: "Day 3", A: "GEEK FAM", B: "RRQ", aScore: 2, bScore: 1 },
+            { week: "Week 3", day: "Day 3", A: "ALTER EGO ESPORTS", B: "DEWA UNITED", aScore: 0, bScore: 2 },
+
+            { week: "Week 4", day: "Day 1", A: "NAVI", B: "ONIC", aScore: 0, bScore: 2 },
+            { week: "Week 4", day: "Day 1", A: "EVOS", B: "DEWA UNITED", aScore: 2, bScore: 0 },
+            { week: "Week 4", day: "Day 2", A: "TEAM LIQUID ID", B: "BIGETRON BY VIT", aScore: 0, bScore: 0 },
+            { week: "Week 4", day: "Day 2", A: "RRQ", B: "EVOS", aScore: 0, bScore: 0 },
+            { week: "Week 4", day: "Day 2", A: "GEEK FAM", B: "ALTER EGO ESPORTS", aScore: 0, bScore: 0 },
+            { week: "Week 4", day: "Day 3", A: "ONIC", B: "TEAM LIQUID ID", aScore: 0, bScore: 0 },
+            { week: "Week 4", day: "Day 3", A: "BIGETRON BY VIT", B: "RRQ", aScore: 0, bScore: 0 },
+            { week: "Week 4", day: "Day 3", A: "DEWA UNITED", B: "GEEK FAM", aScore: 0, bScore: 0 },
             
-            { week: "Week 4", A: "NAVI", B: "ONIC", aScore: 0, bScore: 2 },
-            { week: "Week 4", A: "EVOS", B: "DEWA UNITED", aScore: 2, bScore: 0 },
+            { week: "Week 5", day: "Day 1", A: "GEEK FAM", B: "NAVI", aScore: 0, bScore: 0 },
+            { week: "Week 5", day: "Day 1", A: "EVOS", B: "ONIC", aScore: 0, bScore: 0 },
+            { week: "Week 5", day: "Day 2", A: "DEWA UNITED", B: "RRQ", aScore: 0, bScore: 0 },
+            { week: "Week 5", day: "Day 2", A: "ALTER EGO ESPORTS", B: "TEAM LIQUID ID", aScore: 0, bScore: 0 },
+            { week: "Week 5", day: "Day 2", A: "EVOS", B: "BIGETRON BY VIT", aScore: 0, bScore: 0 },
+            { week: "Week 5", day: "Day 3", A: "ALTER EGO ESPORTS", B: "NAVI", aScore: 0, bScore: 0 },
+            { week: "Week 5", day: "Day 3", A: "GEEK FAM", B: "ONIC", aScore: 0, bScore: 0 },
+            { week: "Week 5", day: "Day 3", A: "DEWA UNITED", B: "TEAM LIQUID ID", aScore: 0, bScore: 0 },
+
+            { week: "Week 6", day: "Day 1", A: "NAVI", B: "DEWA UNITED", aScore: 0, bScore: 0 },
+            { week: "Week 6", day: "Day 1", A: "ALTER EGO ESPORTS", B: "GEEK FAM", aScore: 0, bScore: 0 },
+            { week: "Week 6", day: "Day 2", A: "EVOS", B: "ALTER EGO ESPORTS", aScore: 0, bScore: 0 },
+            { week: "Week 6", day: "Day 2", A: "TEAM LIQUID ID", B: "ONIC", aScore: 0, bScore: 0 },
+            { week: "Week 6", day: "Day 2", A: "RRQ", B: "BIGETRON BY VIT", aScore: 0, bScore: 0 },
+            { week: "Week 6", day: "Day 3", A: "NAVI", B: "TEAM LIQUID ID", aScore: 0, bScore: 0 },
+            { week: "Week 6", day: "Day 3", A: "RRQ", B: "ONIC", aScore: 0, bScore: 0 },
+            { week: "Week 6", day: "Day 3", A: "GEEK FAM", B: "EVOS", aScore: 0, bScore: 0 },
+
+            { week: "Week 7", day: "Day 1", A: "GEEK FAM", B: "DEWA UNITED", aScore: 0, bScore: 0 },
+            { week: "Week 7", day: "Day 1", A: "BIGETRON BY VIT", B: "TEAM LIQUID ID", aScore: 0, bScore: 0 },
+            { week: "Week 7", day: "Day 2", A: "DEWA UNITED", B: "ALTER EGO ESPORTS", aScore: 0, bScore: 0 },
+            { week: "Week 7", day: "Day 2", A: "EVOS", B: "RRQ", aScore: 0, bScore: 0 },
+            { week: "Week 7", day: "Day 2", A: "ONIC", B: "NAVI", aScore: 0, bScore: 0 },
+            { week: "Week 7", day: "Day 3", A: "RRQ", B: "GEEK FAM", aScore: 0, bScore: 0 },
+            { week: "Week 7", day: "Day 3", A: "NAVI", B: "BIGETRON BY VIT", aScore: 0, bScore: 0 },
+            { week: "Week 7", day: "Day 3", A: "TEAM LIQUID ID", B: "EVOS", aScore: 0, bScore: 0 },
+
+            { week: "Week 8", day: "Day 1", A: "BIGETRON BY VIT", B: "GEEK FAM", aScore: 0, bScore: 0 },
+            { week: "Week 8", day: "Day 1", A: "DEWA UNITED", B: "ONIC", aScore: 0, bScore: 0 },
+            { week: "Week 8", day: "Day 2", A: "EVOS", B: "NAVI", aScore: 0, bScore: 0 },
+            { week: "Week 8", day: "Day 2", A: "TEAM LIQUID ID", B: "RRQ", aScore: 0, bScore: 0 },
+            { week: "Week 8", day: "Day 2", A: "ONIC", B: "ALTER EGO ESPORTS", aScore: 0, bScore: 0 },
+            { week: "Week 8", day: "Day 3", A: "DEWA UNITED", B: "EVOS", aScore: 0, bScore: 0 },
+            { week: "Week 8", day: "Day 3", A: "ALTER EGO ESPORTS", B: "BIGETRON BY VIT", aScore: 0, bScore: 0 },
+            { week: "Week 8", day: "Day 3", A: "RRQ", B: "NAVI", aScore: 0, bScore: 0 },
+
+            { week: "Week 9", day: "Day 1", A: "BIGETRON BY VIT", B: "DEWA UNITED", aScore: 0, bScore: 0 },
+            { week: "Week 9", day: "Day 1", A: "TEAM LIQUID ID", B: "ALTER EGO ESPORTS", aScore: 0, bScore: 0 },
+            { week: "Week 9", day: "Day 2", A: "GEEK FAM", B: "TEAM LIQUID ID", aScore: 0, bScore: 0 },
+            { week: "Week 9", day: "Day 2", A: "ALTER EGO ESPORTS", B: "RRQ", aScore: 0, bScore: 0 },
+            { week: "Week 9", day: "Day 2", A: "BIGETRON BY VIT", B: "ONIC", aScore: 0, bScore: 0 },
+            { week: "Week 9", day: "Day 3", A: "RRQ", B: "DEWA UNITED", aScore: 0, bScore: 0 },
+            { week: "Week 9", day: "Day 3", A: "ONIC", B: "EVOS", aScore: 0, bScore: 0 },
+            { week: "Week 9", day: "Day 3", A: "NAVI", B: "GEEK", aScore: 0, bScore: 0 }
         ];
 
-        let teams = {};
-        let matches = [];
+        let schedule = [];
+        let activeWeek = "Week 1";
+        let mobileTab = "schedule";
+        let activeTeam = "ALL";
 
-      
-        function initTeams() {
-            teams = {};
-            teamNames.forEach(n => {
-                teams[n] = {
-                    name: n,
-                    win: 0,
-                    lose: 0,
-                    gameWin: 0,
-                    gameLose: 0,
-                    matchPoint: 0,
-                    netGame: 0
-                };
-            });
+        function loadSchedule() {
+            try { const s = localStorage.getItem("mpl_sched_v2"); if (s) { schedule = JSON.parse(s); return; } } catch (e) { }
+            schedule = JSON.parse(JSON.stringify(DEFAULT));
         }
+        function saveSchedule() { try { localStorage.setItem("mpl_sched_v2", JSON.stringify(schedule)); } catch (e) { } }
 
-        function populateWeek() {
-            const weekSelect = document.getElementById("week");
-            let options = "";
-            for (let i = 1; i <= 9; i++) options += `<option>Week ${i}</option>`;
-            weekSelect.innerHTML = options;
-        }
-
-        function populateDropdown() {
-            const opts = teamNames.map(t => `<option>${t}</option>`).join("");
-            document.getElementById("teamA").innerHTML = opts;
-            document.getElementById("teamB").innerHTML = opts;
-        }
-
-        function getHeadToHead(aName, bName) {
-            let aWins = 0, bWins = 0;
-            matches.forEach(m => {
-                if (m.A === aName && m.B === bName) {
-                    if (m.aScore > m.bScore) aWins++;
-                    else bWins++;
-                }
-                if (m.A === bName && m.B === aName) {
-                    if (m.bScore > m.aScore) aWins++;
-                    else bWins++;
-                }
-            });
-            if (aWins > bWins) return -1;   
-            if (bWins > aWins) return 1;    
-            return 0;
-        }
-
-        function getLogo(team) {
-            const logos = {
-                "ONIC": "logo/onic.png",
-                "TEAM LIQUID ID": "logo/tlid.png",
-                "DEWA UNITED": "logo/dewa.png",
-                "GEEK FAM": "logo/geek.png",
-                "BIGETRON": "logo/btr.png",
-                "ALTER EGO": "logo/ae.png",
-                "EVOS": "logo/evos.png",
-                "NAVI": "logo/navi.png",
-                "RRQ": "logo/rrq.png"
-            };
-            return logos[team] || "logo/default.png";
-        }
-
-        function renderMatch() {
-            const list = document.getElementById("matchList");
-            if (!matches.length) {
-                list.innerHTML = '<li class="empty-note">📋 No matches yet. Add matches or click "Load Current Standings".</li>';
-                return;
+        function computeStats() {
+            const s = {};
+            TEAMS.forEach(t => { s[t] = { name: t, win: 0, lose: 0, gw: 0, gl: 0 } });
+            for (const m of schedule) {
+                if (m.aScore === 0 && m.bScore === 0) continue;
+                const a = s[m.A], b = s[m.B]; if (!a || !b) continue;
+                a.gw += m.aScore; a.gl += m.bScore; b.gw += m.bScore; b.gl += m.aScore;
+                if (m.aScore > m.bScore) { a.win++; b.lose++; } else { b.win++; a.lose++; }
             }
-
-            let grouped = {};
-            matches.forEach(m => {
-                if (!grouped[m.week]) grouped[m.week] = [];
-                grouped[m.week].push(m);
-            });
-
-            let html = "";
-            Object.keys(grouped).sort((a, b) => {
-                const numA = parseInt(a.split(" ")[1]) || 0;
-                const numB = parseInt(b.split(" ")[1]) || 0;
-                return numA - numB;
-            }).forEach(week => {
-                html += `<li style="margin-top:10px; font-weight:bold; background:#ddd; padding:4px 6px; border-radius:6px;"> ${week}</li>`;
-                grouped[week].forEach(m => {
-                    html += `
-                        <li style="display:flex; align-items:center; gap:6px; padding:6px 0;">
-                            <img src="${getLogo(m.A)}" width="18" height="18" style="object-fit:contain;" onerror="this.src='data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2218%22%20height%3D%2218%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22%23aaa%22%3E%3Ccircle%20cx%3D%2212%22%20cy%3D%2212%22%20r%3D%2210%22%2F%3E%3C%2Fsvg%3E'">
-                            <strong>${m.A}</strong>
-                            <span style=color:#1e1e1e; padding:2px 6px; border-radius:20px; font-weight:bold;">${m.aScore} - ${m.bScore}</span>
-                            <img src="${getLogo(m.B)}" width="18" height="18" style="object-fit:contain;" onerror="this.src='data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2218%22%20height%3D%2218%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22%23aaa%22%3E%3Ccircle%20cx%3D%2212%22%20cy%3D%2212%22%20r%3D%2210%22%2F%3E%3C%2Fsvg%3E'">
-                            <strong>${m.B}</strong>
-                        </li>`;
-                });
-            });
-            list.innerHTML = html;
+            for (const t in s) { s[t].mp = s[t].win; s[t].ng = s[t].gw - s[t].gl; }
+            return s;
         }
-
-        function update() {
-            initTeams();
-            matches.forEach(m => {
-                const tA = teams[m.A];
-                const tB = teams[m.B];
-                if (!tA || !tB) return;
-                tA.gameWin += m.aScore;
-                tA.gameLose += m.bScore;
-                tB.gameWin += m.bScore;
-                tB.gameLose += m.aScore;
-                if (m.aScore > m.bScore) {
-                    tA.win++;
-                    tB.lose++;
-                } else {
-                    tB.win++;
-                    tA.lose++;
+        function h2h(a, b) {
+            let aw = 0, bw = 0;
+            for (const m of schedule) {
+                if ((m.A === a && m.B === b) || (m.A === b && m.B === a)) {
+                    const isA = m.A === a;
+                    const sa = isA ? m.aScore : m.bScore, sb = isA ? m.bScore : m.aScore;
+                    if (sa > sb) aw++; else if (sb > sa) bw++;
                 }
-            });
-            renderMatch();
-            renderTable();
-            saveData(); 
+            }
+            return aw > bw ? -1 : bw > aw ? 1 : 0;
         }
-
-        function renderTable() {
-            const arr = Object.values(teams);
-            arr.forEach(t => {
-                t.matchPoint = t.win;      
-                t.netGame = t.gameWin - t.gameLose;
-            });
-
-            arr.sort((a, b) => {
-                if (a.matchPoint !== b.matchPoint) return b.matchPoint - a.matchPoint;
+        function sorted(stats) {
+            return Object.values(stats).sort((a, b) => {
+                if (a.mp !== b.mp) return b.mp - a.mp;
                 if (a.win !== b.win) return b.win - a.win;
-                if (a.netGame !== b.netGame) return b.netGame - a.netGame;
-                if (a.gameWin !== b.gameWin) return b.gameWin - a.gameWin;
-                const h2h = getHeadToHead(a.name, b.name);
-                if (h2h !== 0) return h2h;
+                if (a.ng !== b.ng) return b.ng - a.ng;
+                if (a.gw !== b.gw) return b.gw - a.gw;
+                const h = h2h(a.name, b.name); if (h !== 0) return h;
                 return a.name.localeCompare(b.name);
             });
+        }
 
-            const tbody = document.getElementById("standing");
-            tbody.innerHTML = arr.map((t, idx) => {
-                const badgeClass = idx === 0 ? 'r1' : idx === 1 ? 'r2' : idx === 2 ? 'r3' : '';
-                const rowClass = idx < 6 ? 'top-team' : 'bottom-team';
-                return `
-                    <tr class="${rowClass}">
-                        <td><span class="rank-badge ${badgeClass}">${idx + 1}</span></td>
-                        <td class="left team-cell">
-                            <img src="${getLogo(t.name)}" width="22" height="22" onerror="this.src='data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2222%22%20height%3D%2222%22%20fill%3D%22%23999%22%3E%3Crect%20width%3D%2222%22%20height%3D%2222%22%20rx%3D%224%22%2F%3E%3C%2Fsvg%3E'">
-                            <span class="team-name">${t.name}</span>
-                        </td>
-                        <td class="mp-val">${t.matchPoint}</td>
-                        <td>${t.win} - ${t.lose}</td>
-                        <td class="ng-val">${t.netGame}</td>
-                        <td>${t.gameWin} - ${t.gameLose}</td>
-                    </tr>
-                `;
+        function renderWeekNav() {
+            const weeks = [...new Set(DEFAULT.map(m => m.week))].sort((a, b) => parseInt(a.split(" ")[1]) - parseInt(b.split(" ")[1]));
+            const nav = document.getElementById("weekNav");
+            let html = "";
+            weeks.forEach((w, i) => {
+                if (i > 0) html += `<div class="week-connector"></div>`;
+                html += `<button class="week-dot-btn${w === activeWeek ? " active" : ""}" onclick="setWeek('${w}')"><span class="wlabel">${w}</span><span class="wdot"></span></button>`;
+            });
+            nav.innerHTML = html;
+        }
+
+        function setWeek(w) { activeWeek = w; renderWeekNav(); renderSchedule(); }
+
+        function renderSchedule() {
+            const matches = schedule
+                .map((m, i) => ({ ...m, i }))
+                .filter(m =>
+                    m.week === activeWeek &&
+                    (activeTeam === "ALL" || m.A === activeTeam || m.B === activeTeam)
+                );
+            const dayMap = new Map();
+            const dayOrder = { "Day 1": 1, "Day 2": 2, "Day 3": 3 };
+            matches.forEach(m => { if (!dayMap.has(m.day)) dayMap.set(m.day, []); dayMap.get(m.day).push(m); });
+            const days = [...dayMap.keys()].sort((a, b) => (dayOrder[a] || 0) - (dayOrder[b] || 0));
+            let html = `<div class="week-group-label">${activeWeek}</div>`;
+            if (!days.length) { html += '<div style="padding:24px;text-align:center;color:var(--text3)">Tidak ada pertandingan di week ini</div>'; }
+            for (const day of days) {
+                html += `<div class="day-section"><div class="day-header"><div class="day-label">${day}</div></div>`;
+                for (const m of dayMap.get(day)) {
+                    const cur = `${m.aScore}-${m.bScore}`;
+                    const opts = [["0-0", "0 - 0"], ["2-0", "2 - 0"], ["2-1", "2 - 1"], ["1-2", "1 - 2"], ["0-2", "0 - 2"]];
+                    const selOpts = opts.map(([v, l]) => `<option value="${v}"${cur === v ? " selected" : ""}>${l}</option>`).join("");
+                    html += `<div class="match-card">
+        <div class="match-teams">
+          <div class="team-chip"><img src="${logo(m.A)}" onerror="this.style.display='none'"><span>${m.A}</span></div>
+          <span class="vs-badge">VS</span>
+          <div class="team-chip"><img src="${logo(m.B)}" onerror="this.style.display='none'"><span>${m.B}</span></div>
+        </div>
+        <div class="score-wrap"><select class="score-sel" data-idx="${m.i}">${selOpts}</select></div>
+      </div>`;
+                }
+                html += `</div>`;
+            }
+            document.getElementById("schedContent").innerHTML = html;
+            document.querySelectorAll(".score-sel").forEach(sel => {
+                sel.addEventListener("change", () => {
+                    const idx = parseInt(sel.dataset.idx);
+                    const [a, b] = sel.value.split("-").map(Number);
+                    schedule[idx].aScore = a; schedule[idx].bScore = b;
+                    saveSchedule(); renderStandings();
+                });
+            });
+        }
+
+        function renderStandings() {
+            const stats = computeStats();
+            const arr = sorted(stats);
+            const tbody = document.getElementById("standBody");
+            tbody.innerHTML = arr.map((t, i) => {
+                const rc = i === 0 ? "r1" : i === 1 ? "r2" : i === 2 ? "r3" : "";
+                const rowCls = i < 6 ? "top-row" : "bot-row";
+                const ngCls = t.ng >= 0 ? "ng-pos" : "ng-neg";
+                const ngStr = t.ng > 0 ? "+" + t.ng : t.ng;
+                return `<tr class="${rowCls}">
+      <td><span class="rank-cell ${rc}">${i + 1}</span></td>
+      <td><div class="team-cell-inner"><img src="${logo(t.name)}" onerror="this.style.display='none'"><span class="team-name-s">${t.name}</span></div></td>
+      <td class="mp-val">${t.mp}</td>
+      <td>${t.win} - ${t.lose}</td>
+      <td class="${ngCls}">${ngStr}</td>
+      <td>${t.gw} - ${t.gl}</td>
+    </tr>`;
             }).join("");
         }
 
-        function saveData() {
-            localStorage.setItem("mpl_matches", JSON.stringify(matches));
-        }
-
-        function loadData() {
-            const data = localStorage.getItem("mpl_matches");
-            if (data) {
-                matches = JSON.parse(data);
-            } else {
-                matches = [];
+        function switchTab(tab) {
+            mobileTab = tab;
+            const sp = document.getElementById("schedulePanel");
+            const stp = document.getElementById("standingsPanel");
+            document.getElementById("tabSched").classList.toggle("active", tab === "schedule");
+            document.getElementById("tabStand").classList.toggle("active", tab === "standings");
+            if (window.innerWidth <= 700) {
+                sp.classList.toggle("hidden", tab !== "schedule");
+                stp.classList.toggle("hidden", tab !== "standings");
             }
         }
 
-        function addMatch() {
-            const week = document.getElementById("week").value;
-            const A = document.getElementById("teamA").value;
-            const B = document.getElementById("teamB").value;
-            const score = document.getElementById("score").value;
+        function init() {
 
-            if (A === B) {
-                alert("⚠️ Team tidak boleh sama! Pilih tim yang berbeda.");
-                return;
-            }
+            const tf = document.getElementById("teamFilter");
+            TEAMS.forEach(t => {
+                const opt = document.createElement("option");
+                opt.value = t;
+                opt.textContent = t;
+                tf.appendChild(opt);
+            });
 
-            const [aScore, bScore] = score.split("-").map(Number);
-            matches.push({ week, A, B, aScore, bScore });
-            saveData();
-            update();
+            tf.addEventListener("change", () => {
+                activeTeam = tf.value;
+                renderSchedule();
+            });
+            loadSchedule();
+            renderWeekNav();
+            renderSchedule();
+            renderStandings();
+            document.getElementById("resetBtn").addEventListener("click", () => {
+                if (confirm("Reset ke jadwal & skor default?")) {
+                    schedule = JSON.parse(JSON.stringify(DEFAULT));
+                    saveSchedule(); renderSchedule(); renderStandings();
+                }
+            });
+            document.getElementById("clearBtn").addEventListener("click", () => {
+                if (confirm("Kosongkan semua skor (set ke 0-0)?")) {
+                    schedule.forEach(m => { m.aScore = 0; m.bScore = 0; });
+                    saveSchedule(); renderSchedule(); renderStandings();
+                }
+            });
         }
 
-        function undoMatch() {
-            if (!matches.length) {
-                alert("❌ Tidak ada match untuk di-undo.");
-                return;
-            }
-            matches.pop();
-            saveData();
-            update();
-        }
-
-        function resetAll() {
-            if (confirm("⚠️ Yakin mau reset semua data? Semua pertandingan akan dihapus.")) {
-                matches = [];
-                localStorage.removeItem("mpl_matches");
-                update();
-            }
-        }
-
-        function loadCurrent() {
-            if (!confirm("📋 Load Current Standings? Ini akan mengganti semua match yang ada dengan data pra-musim (Weeks 1-4). Head-to-head dan stat akan diupdate.")) return;
-            matches = JSON.parse(JSON.stringify(currentMatches));
-            saveData();
-            update();
-        }
-
-        window.addMatch = addMatch;
-        window.undoMatch = undoMatch;
-        window.resetAll = resetAll;
-        window.loadCurrent = loadCurrent;
-
-        initTeams();
-        populateDropdown();
-        populateWeek();
-        loadData();        
-        update();          
+        init();
     </script>
 </body>
 
