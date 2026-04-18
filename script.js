@@ -213,8 +213,8 @@ const DEFAULT = [
     day: "Day 2",
     A: "TEAM LIQUID ID",
     B: "BIGETRON BY VIT",
-    aScore: 0,
-    bScore: 0,
+    aScore: 1,
+    bScore: 2,
   },
   { week: "Week 4", day: "Day 2", A: "RRQ", B: "EVOS", aScore: 0, bScore: 0 },
   {
