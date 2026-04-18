@@ -880,16 +880,18 @@ td {
         }
 
         function switchTab(tab) {
-            mobileTab = tab;
-            const sp = document.getElementById("schedulePanel");
-            const stp = document.getElementById("standingsPanel");
-            document.getElementById("tabSched").classList.toggle("active", tab === "schedule");
-            document.getElementById("tabStand").classList.toggle("active", tab === "standings");
-            if (window.innerWidth <= 700) {
-                sp.classList.toggle("hidden", tab !== "schedule");
-                stp.classList.toggle("hidden", tab !== "standings");
+                mobileTab = tab;
+                const sp = document.getElementById("schedulePanel");
+                const stp = document.getElementById("standingsPanel");
+
+                document.getElementById("tabSched").classList.toggle("active", tab === "schedule");
+                document.getElementById("tabStand").classList.toggle("active", tab === "standings");
+
+                if (window.innerWidth <= 700) {
+                    sp.classList.toggle("hidden", tab !== "schedule");
+                    stp.classList.toggle("hidden", tab !== "standings");
+                }
             }
-        }
 
         function init() {
 
@@ -922,7 +924,9 @@ td {
                 }
             });
         }
-
+    if (window.innerWidth <= 700) {
+        switchTab("schedule");
+    }
         init();
     </script>
 </body>
