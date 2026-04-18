@@ -222,8 +222,8 @@ const DEFAULT = [
     day: "Day 2",
     A: "GEEK FAM",
     B: "ALTER EGO ESPORTS",
-    aScore: 0,
-    bScore: 0,
+    aScore: 1,
+    bScore: 2,
   },
   {
     week: "Week 4",
