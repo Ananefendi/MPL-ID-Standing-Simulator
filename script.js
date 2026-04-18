@@ -216,7 +216,7 @@ const DEFAULT = [
     aScore: 1,
     bScore: 2,
   },
-  { week: "Week 4", day: "Day 2", A: "RRQ", B: "EVOS", aScore: 0, bScore: 0 },
+  { week: "Week 4", day: "Day 2", A: "RRQ", B: "EVOS", aScore: 0, bScore: 2 },
   {
     week: "Week 4",
     day: "Day 2",
