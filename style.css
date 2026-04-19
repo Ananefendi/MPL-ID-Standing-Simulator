@@ -632,6 +632,11 @@ td {
   min-width: 34px;
   text-align: right;
 }
-.playoff-table td:first-child{
+.playoff-table td:first-child {
   width: 40%;
+}
+.week-nav-inner {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
 }
