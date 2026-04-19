@@ -246,7 +246,7 @@ const DEFAULT = [
     day: "Day 3",
     A: "DEWA UNITED",
     B: "GEEK FAM",
-    aScore: 0,
+    aScore: 2,
     bScore: 0,
   },
 
@@ -532,7 +532,7 @@ let activeWeek = "ALL";
 let mobileTab = "schedule";
 let activeTeam = "ALL";
 
-const CURRENT_WEEK = "Week 4";
+const CURRENT_WEEK = "Week 5";
 
 const SIM_RESULTS = [
   [2, 0],
