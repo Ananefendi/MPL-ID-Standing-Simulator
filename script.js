@@ -610,11 +610,21 @@ function renderChance() {
 
   const { counters, N } = runSimulation(simMode);
   const stats = computeStats();
-  const arr = sorted(stats);
+
+  const arr = TEAMS.map((t) => ({
+    name: t,
+    ...counters[t],
+  }));
+
+  arr.sort((a, b) => {
+    if (b.playoff !== a.playoff) return b.playoff - a.playoff;
+    if (b.upper !== a.upper) return b.upper - a.upper;
+    return b.lower - a.lower;
+  });
 
   tbody.innerHTML = arr
     .map((t, i) => {
-      const c = counters[t.name];
+      const c = t;
       const rank = i + 1;
       const rc = rank === 1 ? "r1" : rank === 2 ? "r2" : rank === 3 ? "r3" : "";
       const rowCls = rank <= 6 ? "top-row" : "bot-row";
