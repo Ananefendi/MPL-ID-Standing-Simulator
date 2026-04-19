@@ -575,36 +575,63 @@ td {
 }
 
 .current-week {
-    background: linear-gradient(90deg, #ffa600, #ff7b00);
-    color: #000;
-    border-color: #ffa600;
-    box-shadow: 0 0 0 1px rgba(255,166,0,.4);
+  background: linear-gradient(90deg, #ffa600, #ff7b00);
+  color: #000;
+  border-color: #ffa600;
+  box-shadow: 0 0 0 1px rgba(255, 166, 0, 0.4);
 }
 .current-badge {
-    font-size: 8px;
-    font-weight: 800;
-    letter-spacing: 1px;
-    padding: 2px 6px;
-    margin-left: 6px;
-    border-radius: 3px;
-    background: #000;
-    color: #ffa600;
-    border: 1px solid rgba(255,166,0,.4);
-    vertical-align: middle;
+  font-size: 8px;
+  font-weight: 800;
+  letter-spacing: 1px;
+  padding: 2px 6px;
+  margin-left: 6px;
+  border-radius: 3px;
+  background: #000;
+  color: #ffa600;
+  border: 1px solid rgba(255, 166, 0, 0.4);
+  vertical-align: middle;
 }
 
 .nav-current .wdot {
-    background: #ffa600;
-    box-shadow: 0 0 6px rgba(255,166,0,.6);
+  background: #ffa600;
+  box-shadow: 0 0 6px rgba(255, 166, 0, 0.6);
 }
 
 .nav-current-badge {
-    font-size: 7px;
-    margin-left: 4px;
-    padding: 1px 4px;
-    border-radius: 2px;
-    background: #ffa600;
-    color: #000;
-    font-weight: 800;
-    letter-spacing: .5px;
+  font-size: 7px;
+  margin-left: 4px;
+  padding: 1px 4px;
+  border-radius: 2px;
+  background: #ffa600;
+  color: #000;
+  font-weight: 800;
+  letter-spacing: 0.5px;
+}
+.chance-bar-wrap {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  min-width: 90px;
+}
+.chance-bar-bg {
+  flex: 1;
+  height: 6px;
+  border-radius: 3px;
+  background: var(--border2);
+  overflow: hidden;
+}
+.chance-bar-fill {
+  height: 100%;
+  border-radius: 3px;
+  transition: width 0.3s;
+}
+.chance-pct {
+  font-size: 11px;
+  font-weight: 700;
+  min-width: 34px;
+  text-align: right;
+}
+.playoff-table td:first-child{
+  width: 40%;
 }
