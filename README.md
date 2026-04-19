@@ -1,5 +1,4 @@
 # MPL-ID-Standing-Simulator
-# MPL Playoff Chances Simulator
 
 Simulasi Klasemen MPL ID dan peluang lolos playoff berdasarkan hasil pertandingan yang dapat diubah secara interaktif.
 Project ini menggunakan Monte Carlo simulation untuk menghitung kemungkinan setiap tim masuk ke playoff, upper bracket, lower bracket, atau tereliminasi.
