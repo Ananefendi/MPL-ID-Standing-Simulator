@@ -238,8 +238,8 @@ const DEFAULT = [
     day: "Day 3",
     A: "BIGETRON BY VIT",
     B: "RRQ",
-    aScore: 0,
-    bScore: 0,
+    aScore: 2,
+    bScore: 1,
   },
   {
     week: "Week 4",
