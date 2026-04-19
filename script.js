@@ -230,7 +230,7 @@ const DEFAULT = [
     day: "Day 3",
     A: "ONIC",
     B: "TEAM LIQUID ID",
-    aScore: 0,
+    aScore: 2,
     bScore: 0,
   },
   {
