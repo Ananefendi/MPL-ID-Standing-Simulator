@@ -18,6 +18,14 @@ Project ini menggunakan Monte Carlo simulation untuk menghitung kemungkinan seti
 - Responsive (Desktop & Mobile)  
 - Dynamic color berdasarkan persentase peluang  
 
+## How To Use
+
+1. Pilih hasil pertandingan pada dropdown skor  
+2. Klasemen akan otomatis berubah  
+3. Peluang playoff akan dihitung ulang  
+4. Gunakan filter week untuk melihat jadwal tertentu  
+5. Klik Reset to 0-0 untuk mengulang dari awal  
+
 
 ## Simulation Logic
 
@@ -30,15 +38,6 @@ Contoh:
 - 900 dari 1000 simulasi masuk Top 6 → 90%  
 - 300 dari 1000 simulasi Top 2 → 30%  
 
-
-## How To Use
-
-1. Pilih hasil pertandingan pada dropdown skor  
-2. Klasemen akan otomatis berubah  
-3. Peluang playoff akan dihitung ulang  
-4. Gunakan filter week untuk melihat jadwal tertentu  
-5. Klik Reset to 0-0 untuk mengulang dari awal  
-
 ## Tech Stack
 
 - HTML  
@@ -46,21 +45,6 @@ Contoh:
 - Vanilla JavaScript  
 - Monte Carlo Simulation  
 
----
-
-## Responsive
-
-Layout otomatis menyesuaikan:
-- Desktop  
-- Tablet  
-- Mobile  
-
-
-
 ## Credits
 Developed by Ananefendi  
 Jika menggunakan project ini, mohon sertakan credit 🙌
-
-## License
-
-Free to use for educational and personal projects.
