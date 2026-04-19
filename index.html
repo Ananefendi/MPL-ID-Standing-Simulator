@@ -57,8 +57,8 @@
               </select>
             </div>
             <div class="actions">
-              <button class="act-btn" id="resetBtn">Currrent Standings</button>
-              <button class="act-btn danger" id="clearBtn">Reset</button>
+              <button class="act-btn" id="resetBtn">Live Standings</button>
+              <button class="act-btn danger" id="clearBtn">Reset to 0-0</button>
             </div>
           </div>
 
@@ -83,9 +83,44 @@
               <tbody id="standBody"></tbody>
             </table>
           </div>
+          <div class="standings-panel" style="border-top: 2px solid var(--red); margin-top: 0;">
+            <div class="panel-header">
+              <span class="panel-title">Playoff Chances </span>
+             
+            </div>
+            
+            <div class="standings-content">
+              <table>
+                <thead>
+                  <tr>
+                    <th>#</th>
+                    <th>Tim</th>
+                    <th style="color:var(--red)">Playoff (1-6)</th>
+                    <th style="color:#6fcf3a">Upper (1-2)</th>
+                    <th style="color:#60aaee">Lower (3-6)</th>
+                    <th style="color:#e06060">Eliminasi (7-9)</th>
+                  </tr>
+                </thead>
+                <tbody id="chanceBody"></tbody>
+              </table>
+            </div>
+            <div
+              style="display:flex;flex-wrap:wrap;gap:6px;padding:10px 16px;border-top:1px solid var(--border);background:var(--bg2)">
+              <div style="display:flex;align-items:center;gap:5px;font-size:10px;color:var(--text2)">
+                <div style="width:8px;height:8px;border-radius:2px;background:#6fcf3a"></div>Upper bracket (rank 1-2)
+              </div>
+              <div style="display:flex;align-items:center;gap:5px;font-size:10px;color:var(--text2)">
+                <div style="width:8px;height:8px;border-radius:2px;background:#60aaee"></div>Lower bracket (rank 3-6)
+              </div>
+              <div style="display:flex;align-items:center;gap:5px;font-size:10px;color:var(--text2)">
+                <div style="width:8px;height:8px;border-radius:2px;background:#e06060"></div>Eliminasi (rank 7-9)
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
+    
 
     <script src="script.js"></script>
   </body>
