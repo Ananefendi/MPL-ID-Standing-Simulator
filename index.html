@@ -1,72 +1,105 @@
 <!doctype html>
 <html lang="id">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>MPL Season 17 Standings</title>
 
-    <link rel="stylesheet" href="style.css" />
-  </head>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MPL Season 17 Standings</title>
+  <link rel="stylesheet" href="style.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+</head>
 
-  <body>
-    <div class="app">
-      <div class="topbar">
-        <div class="topbar-brand">
-          <div>
-            <div class="topbar-title">MPL Season 17 Standings</div>
-            <div class="topbar-sub">Regular Season</div>
-          </div>
+<body>
+  <div id="shareExportContainer" style="
+    position: fixed;
+    top: -9999px;
+    left: -9999px;
+    display: none;
+    z-index: -1;
+    pointer-events: none;
+  "></div>
+
+  <div class="app">
+    <div class="topbar">
+      <div class="topbar-brand">
+        <div>
+          <div class="topbar-title">MPL Season 17 Standings</div>
+          <div class="topbar-sub">Regular Season</div>
         </div>
+      </div>
+      <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
         <div class="tab-bar">
-          <button
-            class="tab-btn active"
-            id="tabSched"
-            onclick="switchTab('schedule')"
-          >
-            Schedule
-          </button>
-          <button
-            class="tab-btn"
-            id="tabStand"
-            onclick="switchTab('standings')"
-          >
-            Standings
-          </button>
+          <button class="tab-btn active" id="tabSched" onclick="switchTab('schedule')">Schedule</button>
+          <button class="tab-btn" id="tabStand" onclick="switchTab('standings')">Standings</button>
+          <button class="tab-btn" id="tabPlayoff" onclick="switchTab('playoff')">Playoff</button>
         </div>
       </div>
+    </div>
 
-      <div class="week-nav">
-        <div class="week-nav-inner" id="weekNav"></div>
-      </div>
+    <div class="week-nav">
+      <div class="week-nav-inner" id="weekNav"></div>
+    </div>
 
-      <div class="main-panel">
-        <div class="schedule-panel" id="schedulePanel">
-          <div class="panel-header">
-            <div
-              style="
-                display: flex;
-                align-items: center;
-                gap: 8px;
-                flex-wrap: wrap;
-              "
-            >
-              <span class="panel-title">Match Schedule</span>
-
-              <select id="teamFilter" class="act-btn" style="padding: 4px 8px">
-                <option value="ALL">All Teams</option>
-              </select>
-            </div>
-            <div class="actions">
-              <button class="act-btn" id="resetBtn">Live Standings</button>
-              <button class="act-btn danger" id="clearBtn">Reset to 0-0</button>
-            </div>
+    <div class="main-panel" id="mainPanel">
+      <div class="schedule-panel" id="schedulePanel">
+        <div class="panel-header">
+          <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
+            <span class="panel-title">Match Schedule</span>
+            <select id="teamFilter" class="act-btn" style="padding:4px 8px">
+              <option value="ALL">All Teams</option>
+            </select>
           </div>
-
-          <div class="schedule-content" id="schedContent"></div>
+          <div class="actions">
+            <button class="act-btn" id="resetBtn">Live Standings</button>
+            <button class="act-btn danger" id="clearBtn">Reset to 0-0</button>
+          </div>
         </div>
-        <div class="standings-panel" id="standingsPanel">
+        <div class="schedule-content" id="schedContent"></div>
+      </div>
+
+      <div class="standings-panel" id="standingsPanel">
+        <div class="panel-header">
+          <span class="panel-title">Standings</span>
+          <div class="actions">
+            <button class="act-btn dl-btn" id="dlStandBtn">
+              <svg width="13" height="13" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"
+                style="vertical-align:middle;margin-right:4px">
+                <path d="M8 1v9M8 10l-3-3M8 10l3-3M2 13h12" stroke="currentColor" stroke-width="1.6"
+                  stroke-linecap="round" stroke-linejoin="round" />
+              </svg>
+              Save Image
+            </button>
+          </div>
+        </div>
+        <div class="standings-content">
+          <table>
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Tim</th>
+                <th style="color:var(--red)">Match Pts</th>
+                <th>Match W-L</th>
+                <th style="color:var(--red)">Net Game</th>
+                <th>Game W-L</th>
+              </tr>
+            </thead>
+            <tbody id="standBody"></tbody>
+          </table>
+        </div>
+
+        <div class="standings-panel" style="border-top:2px solid var(--red);margin-top:0;">
           <div class="panel-header">
-            <span class="panel-title">Standings</span>
+            <span class="panel-title">Chance to Make Playoffs</span>
+            <div class="actions">
+              <button class="act-btn dl-btn" id="dlChanceBtn">
+                <svg width="13" height="13" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"
+                  style="vertical-align:middle;margin-right:4px">
+                  <path d="M8 1v9M8 10l-3-3M8 10l3-3M2 13h12" stroke="currentColor" stroke-width="1.6"
+                    stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+                Save Image
+              </button>
+            </div>
           </div>
           <div class="standings-content">
             <table>
@@ -74,54 +107,35 @@
                 <tr>
                   <th>#</th>
                   <th>Tim</th>
-                  <th style="color: var(--red)">Match Pts</th>
-                  <th>Match W-L</th>
-                  <th style="color: var(--red)">Net Game</th>
-                  <th>Game W-L</th>
+                  <th style="color:var(--red)">Playoff (1-6)</th>
+                  <th style="color:#6fcf3a">Upper (1-2)</th>
+                  <th style="color:#60aaee">Lower (3-6)</th>
+                  <th style="color:#e06060">Eliminasi (7-9)</th>
                 </tr>
               </thead>
-              <tbody id="standBody"></tbody>
+              <tbody id="chanceBody"></tbody>
             </table>
           </div>
-          <div class="standings-panel" style="border-top: 2px solid var(--red); margin-top: 0;">
-            <div class="panel-header">
-              <span class="panel-title">Playoff Chances </span>
-             
-            </div>
-            
-            <div class="standings-content">
-              <table>
-                <thead>
-                  <tr>
-                    <th>#</th>
-                    <th>Tim</th>
-                    <th style="color:var(--red)">Playoff (1-6)</th>
-                    <th style="color:#6fcf3a">Upper (1-2)</th>
-                    <th style="color:#60aaee">Lower (3-6)</th>
-                    <th style="color:#e06060">Eliminasi (7-9)</th>
-                  </tr>
-                </thead>
-                <tbody id="chanceBody"></tbody>
-              </table>
-            </div>
-            <div
-              style="display:flex;flex-wrap:wrap;gap:6px;padding:10px 16px;border-top:1px solid var(--border);background:var(--bg2)">
-              <div style="display:flex;align-items:center;gap:5px;font-size:10px;color:var(--text2)">
-                <div style="width:8px;height:8px;border-radius:2px;background:#6fcf3a"></div>Upper bracket (rank 1-2)
-              </div>
-              <div style="display:flex;align-items:center;gap:5px;font-size:10px;color:var(--text2)">
-                <div style="width:8px;height:8px;border-radius:2px;background:#60aaee"></div>Lower bracket (rank 3-6)
-              </div>
-              <div style="display:flex;align-items:center;gap:5px;font-size:10px;color:var(--text2)">
-                <div style="width:8px;height:8px;border-radius:2px;background:#e06060"></div>Eliminasi (rank 7-9)
-              </div>
-            </div>
+          <div
+            style="display:flex;flex-wrap:wrap;gap:6px;padding:10px 16px;border-top:1px solid var(--border);background:var(--bg2)">
           </div>
         </div>
       </div>
-    </div>
-    
 
-    <script src="script.js"></script>
-  </body>
+    </div>
+
+    <!-- <div class="playoff-panel" id="playoffPanel">
+      <div class="panel-header">
+        <span class="panel-title">Playoff Bracket</span>
+        <div class="actions">
+          <button class="act-btn danger" id="resetPlayoffBtn">Reset Playoff</button>
+        </div>
+      </div>
+      <div id="playoffBracket" class="pf-bracket-wrap"></div>
+    </div> -->
+  </div>
+
+  <script src="script.js"></script>
+</body>
+
 </html>
