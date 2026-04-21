@@ -28,10 +28,12 @@
         </div>
       </div>
       <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
+        <button class="act-btn" onclick="showTutorial()">Tutorial</button>
+        <a href="https://secreto.site/arsg08" target="_blank" class="act-btn">Feedback</a>
         <div class="tab-bar">
           <button class="tab-btn active" id="tabSched" onclick="switchTab('schedule')">Schedule</button>
           <button class="tab-btn" id="tabStand" onclick="switchTab('standings')">Standings</button>
-           <!-- <button class="tab-btn" id="tabPlayoff" onclick="switchTab('playoff')">Playoff</button> -->
+          <!-- <button class="tab-btn" id="tabPlayoff" onclick="switchTab('playoff')">Playoff</button> -->
         </div>
       </div>
     </div>
@@ -119,6 +121,20 @@
           <div
             style="display:flex;flex-wrap:wrap;gap:6px;padding:10px 16px;border-top:1px solid var(--border);background:var(--bg2)">
           </div>
+        </div>
+      </div>
+
+      <div id="tutorialModal" class="tutorial-modal">
+        <div class="tutorial-box">
+          <h3>How to Use</h3>
+          <ul>
+            <li>Ubah skor pertandingan di Schedule</li>
+            <li>Klasemen akan otomatis berubah</li>
+            <li>Gunakan filter tim untuk melihat jadwal tim tertentu</li>
+            <li>Live Standings untuk kembali ke klasemen asli</li>
+            <li>Reset to 0-0 untuk mengosongkan semua skor</li>
+          </ul>
+          <button class="act-btn" onclick="closeTutorial()">Close</button>
         </div>
       </div>
 
