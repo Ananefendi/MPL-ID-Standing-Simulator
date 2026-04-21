@@ -933,6 +933,7 @@ function loadTheme() {
   } catch(e) {}
 }
 
+
 function init() {
   const tf = document.getElementById("teamFilter");
   TEAMS.forEach((t) => {
@@ -993,3 +994,10 @@ function init() {
 
 if (window.innerWidth <= 700) switchTab("schedule");
 init();
+function showTutorial(){
+  document.getElementById("tutorialModal").style.display = "flex";
+}
+
+function closeTutorial(){
+  document.getElementById("tutorialModal").style.display = "none";
+}
