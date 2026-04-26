@@ -10,6 +10,7 @@
 </head>
 
 <body>
+  <!-- Hidden export container -->
   <div id="shareExportContainer" style="
     position: fixed;
     top: -9999px;
@@ -19,21 +20,51 @@
     pointer-events: none;
   "></div>
 
+  <div class="sched-dl-modal" id="schedDlModal">
+    <div class="sched-dl-box">
+      <div class="sched-dl-header">
+        <div class="sched-dl-title">
+          <span class="sched-dl-title-icon"></span>
+          <span data-i18n="downloadSchedule">Unduh Jadwal</span>
+          <span class="sched-dl-week-tag" id="schedDlWeekLabel">Week X</span>
+        </div>
+        <button class="sched-dl-close" onclick="hideSchedDownloadModal()" title="Close">✕</button>
+      </div>
+      <div class="sched-dl-body">
+        <div class="sched-dl-subtitle" data-i18n="chooseType">Pilih jenis unduhan</div>
+        <div id="schedDlDayBtns"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sched-dl-loading" id="schedDlLoadingOverlay">
+    <div class="sched-dl-loading-spinner"></div>
+    <div class="sched-dl-loading-text" id="schedDlLoadText" data-i18n="processing">Memproses...</div>
+    <div class="sched-dl-loading-bar">
+      <div class="sched-dl-loading-bar-fill"></div>
+    </div>
+  </div>
+
   <div class="app">
     <div class="topbar">
       <div class="topbar-brand">
         <div>
           <div class="topbar-title">MPL Season 17 Standings</div>
-          <div class="topbar-sub">Regular Season</div>
+          <div class="topbar-sub" data-i18n="regularSeason">Regular Season</div>
         </div>
       </div>
       <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
-        <button class="act-btn" onclick="showTutorial()">Tutorial</button>
-        <a href="https://secreto.site/arsg08" target="_blank" class="act-btn">Feedback</a>
+        <button class="act-btn" onclick="showTutorial()" data-i18n="tutorial">Tutorial</button>
+        <a href="https://secreto.site/arsg08" target="_blank" class="act-btn" data-i18n="feedback">Feedback</a>
+        <button class="lang-toggle" id="langToggleBtn" onclick="toggleLanguage()" title="Toggle Language">
+          <span class="lang-flag" id="langFlag">🇮🇩</span>
+          <span class="lang-label" id="langLabel">ID</span>
+        </button>
+        
         <div class="tab-bar">
-          <button class="tab-btn active" id="tabSched" onclick="switchTab('schedule')">Schedule</button>
-          <button class="tab-btn" id="tabStand" onclick="switchTab('standings')">Standings</button>
-          <!-- <button class="tab-btn" id="tabPlayoff" onclick="switchTab('playoff')">Playoff</button> -->
+          <button class="tab-btn active" id="tabSched" onclick="switchTab('schedule')"
+            data-i18n="schedule">Jadwal</button>
+          <button class="tab-btn" id="tabStand" onclick="switchTab('standings')" data-i18n="standings">Klasemen</button>
         </div>
       </div>
     </div>
@@ -46,22 +77,31 @@
       <div class="schedule-panel" id="schedulePanel">
         <div class="panel-header">
           <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
-            <span class="panel-title">Match Schedule</span>
+            <span class="panel-title" data-i18n="matchSchedule">Jadwal Pertandingan</span>
             <select id="teamFilter" class="act-btn" style="padding:4px 8px">
-              <option value="ALL">All Teams</option>
+              <option value="ALL" data-i18n="allTeams">Semua Tim</option>
             </select>
           </div>
           <div class="actions">
-            <button class="act-btn" id="resetBtn">Live Standings</button>
-            <button class="act-btn danger" id="clearBtn">Reset to 0-0</button>
+            <button class="act-btn dl-btn" id="dlSchedBtn" title="Download schedule as image">
+              <svg width="13" height="13" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"
+                style="vertical-align:middle;margin-right:4px">
+                <path d="M8 1v9M8 10l-3-3M8 10l3-3M2 13h12" stroke="currentColor" stroke-width="1.6"
+                  stroke-linecap="round" stroke-linejoin="round" />
+              </svg>
+              <span data-i18n="saveImage">Simpan Gambar</span>
+            </button>
+            <button class="act-btn" id="resetBtn" data-i18n="liveStandings">Klasemen Terkini</button>
+            <button class="act-btn danger" id="clearBtn" data-i18n="resetToZero">Reset ke 0-0</button>
           </div>
         </div>
         <div class="schedule-content" id="schedContent"></div>
       </div>
 
+      <!-- ── Standings Panel ── -->
       <div class="standings-panel" id="standingsPanel">
         <div class="panel-header">
-          <span class="panel-title">Standings</span>
+          <span class="panel-title" data-i18n="standings">Klasemen</span>
           <div class="actions">
             <button class="act-btn dl-btn" id="dlStandBtn">
               <svg width="13" height="13" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"
@@ -69,7 +109,7 @@
                 <path d="M8 1v9M8 10l-3-3M8 10l3-3M2 13h12" stroke="currentColor" stroke-width="1.6"
                   stroke-linecap="round" stroke-linejoin="round" />
               </svg>
-              Save Image
+              <span data-i18n="saveImage">Simpan Gambar</span>
             </button>
           </div>
         </div>
@@ -78,11 +118,11 @@
             <thead>
               <tr>
                 <th>#</th>
-                <th>Tim</th>
-                <th style="color:var(--red)">Match Pts</th>
-                <th>Match W-L</th>
-                <th style="color:var(--red)">Net Game</th>
-                <th>Game W-L</th>
+                <th data-i18n="team">Tim</th>
+                <th style="color:var(--red)" data-i18n="matchPts">Poin Match</th>
+                <th data-i18n="matchWL">M W-L</th>
+                <th style="color:var(--red)" data-i18n="netGame">Net Game</th>
+                <th data-i18n="gameWL">G W-L</th>
               </tr>
             </thead>
             <tbody id="standBody"></tbody>
@@ -91,7 +131,7 @@
 
         <div class="standings-panel" style="border-top:2px solid var(--red);margin-top:0;">
           <div class="panel-header">
-            <span class="panel-title">Chance to Make Playoffs</span>
+            <span class="panel-title" data-i18n="chancePlayoff">Peluang Lolos Playoff</span>
             <div class="actions">
               <button class="act-btn dl-btn" id="dlChanceBtn">
                 <svg width="13" height="13" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"
@@ -99,7 +139,7 @@
                   <path d="M8 1v9M8 10l-3-3M8 10l3-3M2 13h12" stroke="currentColor" stroke-width="1.6"
                     stroke-linecap="round" stroke-linejoin="round" />
                 </svg>
-                Save Image
+                <span data-i18n="saveImage">Simpan Gambar</span>
               </button>
             </div>
           </div>
@@ -108,11 +148,11 @@
               <thead>
                 <tr>
                   <th>#</th>
-                  <th>Tim</th>
-                  <th style="color:var(--red)">Playoff (1-6)</th>
-                  <th style="color:#6fcf3a">Upper (1-2)</th>
-                  <th style="color:#60aaee">Lower (3-6)</th>
-                  <th style="color:#e06060">Eliminasi (7-9)</th>
+                  <th data-i18n="team">Tim</th>
+                  <th style="color:var(--red)" data-i18n="playoff16">Playoff (1-6)</th>
+                  <th style="color:#6fcf3a" data-i18n="upper12">Upper (1-2)</th>
+                  <th style="color:#60aaee" data-i18n="lower36">Lower (3-6)</th>
+                  <th style="color:#e06060" data-i18n="elim79">Eliminasi (7-9)</th>
                 </tr>
               </thead>
               <tbody id="chanceBody"></tbody>
@@ -124,31 +164,16 @@
         </div>
       </div>
 
+      <!-- Tutorial Modal -->
       <div id="tutorialModal" class="tutorial-modal">
         <div class="tutorial-box">
-          <h3>How to Use</h3>
-          <ul>
-            <li>Ubah skor pertandingan di Schedule</li>
-            <li>Klasemen akan otomatis berubah</li>
-            <li>Gunakan filter tim untuk melihat jadwal tim tertentu</li>
-            <li>Live Standings untuk kembali ke klasemen asli</li>
-            <li>Reset to 0-0 untuk mengosongkan semua skor</li>
-          </ul>
-          <button class="act-btn" onclick="closeTutorial()">Close</button>
+          <h3 data-i18n="howToUse">Cara Penggunaan</h3>
+          <ul id="tutorialList"></ul>
+          <button class="act-btn" onclick="closeTutorial()" data-i18n="close">Tutup</button>
         </div>
       </div>
 
     </div>
-
-    <!-- <div class="playoff-panel" id="playoffPanel">
-      <div class="panel-header">
-        <span class="panel-title">Playoff Bracket</span>
-        <div class="actions">
-          <button class="act-btn danger" id="resetPlayoffBtn">Reset Playoff</button>
-        </div>
-      </div>
-      <div id="playoffBracket" class="pf-bracket-wrap"></div>
-    </div> -->
   </div>
 
   <script src="script.js"></script>
