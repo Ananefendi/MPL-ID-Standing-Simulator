@@ -1,3 +1,231 @@
+// ══════════════════════════════════════════════════════════
+//  INTERNATIONALIZATION (i18n)
+// ══════════════════════════════════════════════════════════
+
+const LANG_STRINGS = {
+  id: {
+    // Topbar & Navigation
+    regularSeason: "Regular Season",
+    tutorial: "Tutorial",
+    feedback: "Feedback",
+    schedule: "Jadwal",
+    standings: "Klasemen",
+
+    // Panel headers
+    matchSchedule: "Jadwal Pertandingan",
+    allTeams: "Semua Tim",
+    saveImage: "Simpan Gambar",
+    liveStandings: "Klasemen Sekarang",
+    resetToZero: "Reset ke 0-0",
+    chancePlayoff: "Peluang Lolos Playoff",
+
+    // Table headers
+    team: "Tim",
+    matchPts: "Poin Match",
+    matchWL: "Match W-L",
+    netGame: "Net Game",
+    gameWL: "Game W-L",
+    playoff16: "Playoff (1-6)",
+    upper12: "Upper (1-2)",
+    lower36: "Lower (3-6)",
+    elim79: "Eliminasi (7-9)",
+
+    // Tutorial
+    howToUse: "Cara Penggunaan",
+    close: "Tutup",
+    tutorialItems: [
+      "Ubah skor pertandingan di tab Jadwal",
+      "Klasemen akan otomatis berubah sesuai skor",
+      "Gunakan filter tim untuk melihat jadwal tim tertentu",
+      "Klasemen Sekarang untuk kembali ke klasemen asli",
+      "Reset ke 0-0 untuk mengosongkan semua skor",
+      "Simpan Gambar untuk menyimpan jadwal sebagai gambar",
+    ],
+
+    // Download modal
+    downloadSchedule: "Unduh Jadwal",
+    chooseType: "Pilih jenis unduhan",
+    downloadAllDays: "Unduh Semua Hari",
+    allDaysDesc: "1 gambar · semua hari digabung",
+    matches: "pertandingan",
+    processing: "Memproses...",
+    loadingLogos: "Memuat logo...",
+    rendering: "Merender gambar...",
+
+    now: "SEKARANG",
+    current: "SEKARANG",
+
+    bestOf3: "Best of 3",
+
+    confirmReset: "Reset ke jadwal & skor default?",
+    confirmClear: "Kosongkan semua skor (set ke 0-0)?",
+
+    // Error
+    errorImage: "Gagal menghasilkan gambar: ",
+    noSchedule: "Tidak ada jadwal untuk hari tersebut.",
+
+    // Share image labels
+    shareRegularSeason: "Regular Season Standings",
+    shareChanceMakePlayoffs: "Peluang Lolos Playoff",
+    sharePlayoffZone: "Zona Playoff (1-6)",
+    shareEliminated: "Eliminasi (7-9)",
+    sharePlayoff: "Playoff 1-6",
+    shareUpper: "Upper 1-2",
+    shareLower: "Lower 3-6",
+    shareElim: "Elim 7-9",
+    shareMatchSchedule: "Jadwal Pertandingan",
+    shareRegularSeasonLabel: "regular season",
+    sharePts: "Pts",
+    shareWL: "Match W-L",
+    shareNet: "Net",
+    shareGameWL: "Game W-L",
+    shareTeam: "Tim",
+  },
+  en: {
+    // Topbar & Navigation
+    regularSeason: "Regular Season",
+    tutorial: "Tutorial",
+    feedback: "Feedback",
+    schedule: "Schedule",
+    standings: "Standings",
+
+    // Panel headers
+    matchSchedule: "Match Schedule",
+    allTeams: "All Teams",
+    saveImage: "Save Image",
+    liveStandings: "Live Standings",
+    resetToZero: "Reset to 0-0",
+    chancePlayoff: "Chance to Make Playoffs",
+
+    // Table headers
+    team: "Team",
+    matchPts: "Match Pts",
+    matchWL: "Match W-L",
+    netGame: "Net Game",
+    gameWL: "Game W-L",
+    playoff16: "Playoff (1-6)",
+    upper12: "Upper (1-2)",
+    lower36: "Lower (3-6)",
+    elim79: "Eliminated (7-9)",
+
+    // Tutorial
+    howToUse: "How to Use",
+    close: "Close",
+    tutorialItems: [
+      "Change match scores in the Schedule tab",
+      "Standings update automatically based on scores",
+      "Use the team filter to view a specific team's schedule",
+      "Live Standings to revert to the official standings",
+      "Reset to 0-0 to clear all scores",
+      "Save Image to download the schedule as an image",
+    ],
+
+    // Download modal
+    downloadSchedule: "Download Schedule",
+    chooseType: "Choose download type",
+    downloadAllDays: "Download All Days",
+    allDaysDesc: "1 image · all days combined",
+    matches: "matches",
+    processing: "Processing...",
+    loadingLogos: "Loading logos...",
+    rendering: "Rendering image...",
+
+    // Week nav
+    now: "NOW",
+    current: "CURRENT",
+
+    // Match card
+    bestOf3: "Best of 3",
+
+    // Confirm dialogs
+    confirmReset: "Reset to default schedule & scores?",
+    confirmClear: "Clear all scores (set to 0-0)?",
+
+    // Error
+    errorImage: "Failed to generate image: ",
+    noSchedule: "No schedule found for that day.",
+
+    // Share image labels
+    shareRegularSeason: "Regular Season Standings",
+    shareChanceMakePlayoffs: "Chance to Make Playoffs",
+    sharePlayoffZone: "Playoff Zone (1-6)",
+    shareEliminated: "Eliminated (7-9)",
+    sharePlayoff: "Playoff 1-6",
+    shareUpper: "Upper 1-2",
+    shareLower: "Lower 3-6",
+    shareElim: "Elim 7-9",
+    shareMatchSchedule: "Match Schedule",
+    shareRegularSeasonLabel: "regular season",
+    sharePts: "Pts",
+    shareWL: "W-L",
+    shareNet: "Net",
+    shareGameWL: "Game W-L",
+    shareTeam: "Team",
+  },
+};
+
+let currentLang = "id";
+
+function t(key) {
+  return (LANG_STRINGS[currentLang] || LANG_STRINGS["id"])[key] || key;
+}
+
+function applyI18n() {
+  document.querySelectorAll("[data-i18n]").forEach((el) => {
+    const key = el.getAttribute("data-i18n");
+    const val = t(key);
+    if (val) el.textContent = val;
+  });
+
+  // Update tutorial list dynamically
+  const tutList = document.getElementById("tutorialList");
+  if (tutList) {
+    tutList.innerHTML = t("tutorialItems").map((item) => `<li>${item}</li>`).join("");
+  }
+
+  // Update team filter "All" option
+  const tf = document.getElementById("teamFilter");
+  if (tf && tf.options[0]) {
+    tf.options[0].textContent = t("allTeams");
+  }
+
+  // Update HTML lang attribute
+  document.documentElement.lang = currentLang;
+}
+
+function toggleLanguage() {
+  currentLang = currentLang === "id" ? "en" : "id";
+  try { localStorage.setItem("mpl_lang", currentLang); } catch (e) {}
+  updateLangButton();
+  applyI18n();
+  // Re-render dynamic content that contains translated strings
+  renderWeekNav();
+  renderSchedule();
+}
+
+function loadLang() {
+  try {
+    const saved = localStorage.getItem("mpl_lang");
+    if (saved === "en" || saved === "id") currentLang = saved;
+  } catch (e) {}
+}
+
+function updateLangButton() {
+  const flag = document.getElementById("langFlag");
+  const label = document.getElementById("langLabel");
+  if (currentLang === "id") {
+    if (flag) flag.textContent = "🇮🇩";
+    if (label) label.textContent = "ID";
+  } else {
+    if (flag) flag.textContent = "🇬🇧";
+    if (label) label.textContent = "EN";
+  }
+}
+
+// ══════════════════════════════════════════════════════════
+//  DATA
+// ══════════════════════════════════════════════════════════
+
 const TEAMS = [
   "ONIC",
   "TEAM LIQUID ID",
@@ -20,8 +248,8 @@ const LOGOS = {
   RRQ: "logo/rrq.png",
   "BIGETRON BY VIT": "logo/btr.png",
 };
-function logo(t) {
-  return LOGOS[t] || "";
+function logo(tm) {
+  return LOGOS[tm] || "";
 }
 
 const DEFAULT = [
@@ -106,46 +334,26 @@ let activeTeam = "ALL";
 function getCurrentWeekAuto() {
   const startDate = new Date("2026-03-27");
   const now = new Date();
-
   const diff = now - startDate;
   const weekNumber = Math.floor(diff / (1000 * 60 * 60 * 24 * 7)) + 1;
-
   return "Week " + Math.min(Math.max(weekNumber, 1), 9);
 }
 
 const CURRENT_WEEK = getCurrentWeekAuto();
-
-let playoffScores = {
-  m1: null, m2: null, m3: null, m4: null,
-  m5: null, m6: null, m7: null, m8: null,
-};
-
-function loadPlayoffScores() {
-  try {
-    const s = localStorage.getItem("mpl_playoff_v1");
-    if (s) playoffScores = JSON.parse(s);
-  } catch (e) {}
-}
-
-function savePlayoffScores() {
-  try {
-    localStorage.setItem("mpl_playoff_v1", JSON.stringify(playoffScores));
-  } catch (e) {}
-}
 
 const SIM_RESULTS = [[2, 0], [2, 1], [1, 2], [0, 2]];
 let simMode = "Now";
 
 function simCopyStats(s) {
   const c = {};
-  for (const t in s) c[t] = { ...s[t] };
+  for (const tk in s) c[tk] = { ...s[tk] };
   return c;
 }
 
 function runSimulation(mode) {
   const N = 10000;
   const counters = {};
-  TEAMS.forEach((t) => { counters[t] = { playoff: 0, upper: 0, lower: 0, elim: 0 }; });
+  TEAMS.forEach((tm) => { counters[tm] = { playoff: 0, upper: 0, lower: 0, elim: 0 }; });
   const pending = schedule.filter((m) => m.aScore === 0 && m.bScore === 0);
   for (let i = 0; i < N; i++) {
     const base = computeStats();
@@ -161,12 +369,12 @@ function runSimulation(mode) {
       s[pm.B].ng = s[pm.B].gw - s[pm.B].gl;
     }
     const ranked = sorted(s);
-    ranked.forEach((t, idx) => {
+    ranked.forEach((tm, idx) => {
       const rank = idx + 1;
-      if (rank <= 6) counters[t.name].playoff++;
-      if (rank <= 2) counters[t.name].upper++;
-      if (rank >= 3 && rank <= 6) counters[t.name].lower++;
-      if (rank >= 7) counters[t.name].elim++;
+      if (rank <= 6) counters[tm.name].playoff++;
+      if (rank <= 2) counters[tm.name].upper++;
+      if (rank >= 3 && rank <= 6) counters[tm.name].lower++;
+      if (rank >= 7) counters[tm.name].elim++;
     });
   }
   return { counters, N };
@@ -183,13 +391,13 @@ function renderChance() {
   const tbody = document.getElementById("chanceBody");
   if (!tbody) return;
   const { counters, N } = runSimulation(simMode);
-  const arr = TEAMS.map((t) => ({ name: t, ...counters[t] }));
+  const arr = TEAMS.map((tm) => ({ name: tm, ...counters[tm] }));
   arr.sort((a, b) => {
     if (b.playoff !== a.playoff) return b.playoff - a.playoff;
     if (b.upper !== a.upper) return b.upper - a.upper;
     return b.lower - a.lower;
   });
-  tbody.innerHTML = arr.map((t, i) => {
+  tbody.innerHTML = arr.map((tm, i) => {
     const rank = i + 1;
     const rc = rank === 1 ? "r1" : rank === 2 ? "r2" : rank === 3 ? "r3" : "";
     const rowCls = rank <= 6 ? "top-row" : "bot-row";
@@ -201,11 +409,11 @@ function renderChance() {
       </div>`;
     return `<tr class="${rowCls}">
       <td><span class="rank-cell ${rc}">${rank}</span></td>
-      <td><div class="team-cell-inner"><img src="${logo(t.name)}" onerror="this.style.display='none'"><span class="team-name-s">${t.name}</span></div></td>
-      <td>${bar(t.playoff, barColor(p(t.playoff)))}</td>
-      <td>${bar(t.upper, "#6fcf3a")}</td>
-      <td>${bar(t.lower, "#60aaee")}</td>
-      <td>${bar(t.elim, "#e06060")}</td>
+      <td><div class="team-cell-inner"><img src="${logo(tm.name)}" onerror="this.style.display='none'"><span class="team-name-s">${tm.name}</span></div></td>
+      <td>${bar(tm.playoff, barColor(p(tm.playoff)))}</td>
+      <td>${bar(tm.upper, "#6fcf3a")}</td>
+      <td>${bar(tm.lower, "#60aaee")}</td>
+      <td>${bar(tm.elim, "#e06060")}</td>
     </tr>`;
   }).join("");
 }
@@ -224,7 +432,7 @@ function saveSchedule() {
 
 function computeStats() {
   const s = {};
-  TEAMS.forEach((t) => { s[t] = { name: t, win: 0, lose: 0, gw: 0, gl: 0 }; });
+  TEAMS.forEach((tm) => { s[tm] = { name: tm, win: 0, lose: 0, gw: 0, gl: 0 }; });
   for (const m of schedule) {
     if (m.aScore === 0 && m.bScore === 0) continue;
     const a = s[m.A], b = s[m.B];
@@ -234,7 +442,7 @@ function computeStats() {
     if (m.aScore > m.bScore) { a.win++; b.lose++; }
     else { b.win++; a.lose++; }
   }
-  for (const t in s) { s[t].mp = s[t].win; s[t].ng = s[t].gw - s[t].gl; }
+  for (const tk in s) { s[tk].mp = s[tk].win; s[tk].ng = s[tk].gw - s[tk].gl; }
   return s;
 }
 
@@ -271,9 +479,15 @@ function renderWeekNav() {
     <span class="wlabel">ALL</span><span class="wdot"></span>
   </button>`;
   weeks.forEach((w) => {
+    const wNum = w.split(" ")[1];
+    const weekLabel = currentLang === "id" ? `Minggu ${wNum}` : `Week ${wNum}`;
+    const isCurrentWeek = w === CURRENT_WEEK;
+    const nowBadge = isCurrentWeek
+      ? `<span class="nav-current-badge">${t("now")}</span>`
+      : "";
     html += `<div class="week-connector"></div>`;
-    html += `<button class="week-dot-btn${w === activeWeek ? " active" : ""} ${w === CURRENT_WEEK ? "nav-current" : ""}" onclick="setWeek('${w}')">
-      <span class="wlabel">${w}${w === CURRENT_WEEK ? '<span class="nav-current-badge">NOW</span>' : ""}</span>
+    html += `<button class="week-dot-btn${w === activeWeek ? " active" : ""} ${isCurrentWeek ? "nav-current" : ""}" onclick="setWeek('${w}')">
+      <span class="wlabel">${weekLabel}${nowBadge}</span>
       <span class="wdot"></span>
     </button>`;
   });
@@ -285,6 +499,7 @@ function setWeek(w) {
   renderWeekNav();
   renderSchedule();
 }
+
 function renderSchedule() {
   const matches = schedule
     .map((m, i) => ({ ...m, i }))
@@ -295,11 +510,25 @@ function renderSchedule() {
   const dayOrder = { "Day 1": 1, "Day 2": 2, "Day 3": 3 };
   let html = "";
 
+  const localizeWeek = (w) => {
+    if (currentLang === "id") {
+      return w.replace("Week ", "Minggu ");
+    }
+    return w;
+  };
+
+  const localizeDay = (d) => {
+    if (currentLang === "id") {
+      return d.replace("Day ", "Hari ");
+    }
+    return d;
+  };
+
   const buildDays = (list) => {
     const dayMap = new Map();
     list.forEach((m) => { if (!dayMap.has(m.day)) dayMap.set(m.day, []); dayMap.get(m.day).push(m); });
     return [...dayMap.keys()].sort((a, b) => (dayOrder[a] || 0) - (dayOrder[b] || 0)).map((day) => {
-      let s = `<div class="day-section"><div class="day-header"><div class="day-label">${day}</div></div>`;
+      let s = `<div class="day-section"><div class="day-header"><div class="day-label">${localizeDay(day)}</div></div>`;
       dayMap.get(day).forEach((m) => { s += matchCard(m); });
       return s + `</div>`;
     }).join("");
@@ -309,14 +538,18 @@ function renderSchedule() {
     const weekMap = new Map();
     matches.forEach((m) => { if (!weekMap.has(m.week)) weekMap.set(m.week, []); weekMap.get(m.week).push(m); });
     [...weekMap.keys()].sort((a, b) => parseInt(a.split(" ")[1]) - parseInt(b.split(" ")[1])).forEach((week) => {
-      html += `<div class="week-group-label ${week === CURRENT_WEEK ? "current-week" : ""}">
-        ${week}${week === CURRENT_WEEK ? '<span class="current-badge">NOW</span>' : ""}
+      const isCurrentWeek = week === CURRENT_WEEK;
+      const badge = isCurrentWeek ? `<span class="current-badge">${t("now")}</span>` : "";
+      html += `<div class="week-group-label ${isCurrentWeek ? "current-week" : ""}">
+        ${localizeWeek(week)}${badge}
       </div>`;
       html += buildDays(weekMap.get(week));
     });
   } else {
-    html += `<div class="week-group-label ${activeWeek === CURRENT_WEEK ? "current-week" : ""}">
-      ${activeWeek}${activeWeek === CURRENT_WEEK ? '<span class="current-badge">CURRENT</span>' : ""}
+    const isCurrentWeek = activeWeek === CURRENT_WEEK;
+    const badge = isCurrentWeek ? `<span class="current-badge">${t("current")}</span>` : "";
+    html += `<div class="week-group-label ${isCurrentWeek ? "current-week" : ""}">
+      ${localizeWeek(activeWeek)}${badge}
     </div>`;
     html += buildDays(matches);
   }
@@ -331,7 +564,6 @@ function renderSchedule() {
       saveSchedule();
       renderStandings();
       renderChance();
-      renderPlayoffBracket();
     });
   });
 }
@@ -349,31 +581,36 @@ function matchCard(m) {
     <div class="score-wrap"><select class="score-sel" data-idx="${m.i}">${selOpts}</select></div>
   </div>`;
 }
+
 function renderStandings() {
   const stats = computeStats();
   const arr = sorted(stats);
   const tbody = document.getElementById("standBody");
-  tbody.innerHTML = arr.map((t, i) => {
+  tbody.innerHTML = arr.map((tm, i) => {
     const rc = i === 0 ? "r1" : i === 1 ? "r2" : i === 2 ? "r3" : "";
     const rowCls = i < 6 ? "top-row" : "bot-row";
-    const ngCls = t.ng >= 0 ? "ng-pos" : "ng-neg";
-    const ngStr = t.ng > 0 ? "+" + t.ng : t.ng;
+    const ngCls = tm.ng >= 0 ? "ng-pos" : "ng-neg";
+    const ngStr = tm.ng > 0 ? "+" + tm.ng : tm.ng;
     return `<tr class="${rowCls}">
       <td><span class="rank-cell ${rc}">${i + 1}</span></td>
-      <td><div class="team-cell-inner"><img src="${logo(t.name)}" onerror="this.style.display='none'"><span class="team-name-s">${t.name}</span></div></td>
-      <td class="mp-val">${t.mp}</td>
-      <td>${t.win} - ${t.lose}</td>
+      <td><div class="team-cell-inner"><img src="${logo(tm.name)}" onerror="this.style.display='none'"><span class="team-name-s">${tm.name}</span></div></td>
+      <td class="mp-val">${tm.mp}</td>
+      <td>${tm.win} - ${tm.lose}</td>
       <td class="${ngCls}">${ngStr}</td>
-      <td>${t.gw} - ${t.gl}</td>
+      <td>${tm.gw} - ${tm.gl}</td>
     </tr>`;
   }).join("");
 }
+
+// ══════════════════════════════════════════════════════════
+//  IMAGE EXPORT HELPERS
+// ══════════════════════════════════════════════════════════
+
 const _logoB64Cache = {};
 
 function imgToBase64(src) {
   if (!src) return Promise.resolve("");
   if (_logoB64Cache[src]) return Promise.resolve(_logoB64Cache[src]);
-
   return new Promise((resolve) => {
     const img = new Image();
     img.crossOrigin = "anonymous";
@@ -386,9 +623,7 @@ function imgToBase64(src) {
         const b64 = c.toDataURL("image/png");
         _logoB64Cache[src] = b64;
         resolve(b64);
-      } catch (e) {
-        resolve("");
-      }
+      } catch (e) { resolve(""); }
     };
     img.onerror = () => resolve("");
     img.src = src + (src.includes("?") ? "&" : "?") + "_cb=" + Date.now();
@@ -397,7 +632,7 @@ function imgToBase64(src) {
 
 async function preloadLogos(teamList) {
   const entries = await Promise.all(
-    teamList.map(async (t) => [t, await imgToBase64(logo(t))])
+    teamList.map(async (tm) => [tm, await imgToBase64(logo(tm))])
   );
   return Object.fromEntries(entries);
 }
@@ -406,7 +641,7 @@ function getShareData() {
   const stats = computeStats();
   const arr = sorted(stats);
   const { counters, N } = runSimulation("current");
-  const chanceArr = TEAMS.map((t) => ({ name: t, ...counters[t] }));
+  const chanceArr = TEAMS.map((tm) => ({ name: tm, ...counters[tm] }));
   chanceArr.sort((a, b) => {
     if (b.playoff !== a.playoff) return b.playoff - a.playoff;
     if (b.upper !== a.upper) return b.upper - a.upper;
@@ -418,7 +653,13 @@ function getShareData() {
 function buildShareHTML(type, logoB64) {
   const { standings, chances, N } = getShareData();
   const now = new Date();
-  const dateStr = now.toLocaleDateString("id-ID", { day: "numeric", month: "long", year: "numeric" });
+  const locale = currentLang === "id" ? "id-ID" : "en-GB";
+  const dateStr = now.toLocaleDateString(locale, { day: "numeric", month: "long", year: "numeric" });
+
+  const weekLabel = currentLang === "id"
+    ? CURRENT_WEEK.replace("Week ", "Minggu ")
+    : CURRENT_WEEK;
+
   const logoImg = (teamName, size = 28) => {
     const src = logoB64[teamName];
     if (src) {
@@ -442,10 +683,10 @@ function buildShareHTML(type, logoB64) {
   };
 
   if (type === "standings") {
-    const rows = standings.map((t, i) => {
+    const rows = standings.map((tm, i) => {
       const isTop = i < 6;
-      const ng = t.ng > 0 ? "+" + t.ng : String(t.ng);
-      const ngCol = t.ng >= 0 ? "#ffa600" : "#e06060";
+      const ng = tm.ng > 0 ? "+" + tm.ng : String(tm.ng);
+      const ngCol = tm.ng >= 0 ? "#ffa600" : "#e06060";
       const rowBg = isTop ? "rgba(74,222,128,0.06)" : "rgba(192,57,43,0.08)";
       const borderLeft = isTop ? "3px solid rgba(74,222,128,0.3)" : "3px solid rgba(192,57,43,0.3)";
       return `<tr style="background:${rowBg}">
@@ -454,14 +695,14 @@ function buildShareHTML(type, logoB64) {
         </td>
         <td style="padding:9px 8px;text-align:left;border-bottom:1px solid #2e2e2e;border-left:${borderLeft}">
           <div style="display:flex;align-items:center;gap:8px">
-            ${logoImg(t.name, 26)}
-            <span style="font-weight:700;font-size:12px;color:#f5f0e8">${t.name}</span>
+            ${logoImg(tm.name, 26)}
+            <span style="font-weight:700;font-size:12px;color:#f5f0e8">${tm.name}</span>
           </div>
         </td>
-        <td style="padding:9px 8px;text-align:center;border-bottom:1px solid #2e2e2e;font-weight:800;font-size:15px;color:#ffa600">${t.mp}</td>
-        <td style="padding:9px 8px;text-align:center;border-bottom:1px solid #2e2e2e;color:#c8b99a;font-size:12px">${t.win}-${t.lose}</td>
+        <td style="padding:9px 8px;text-align:center;border-bottom:1px solid #2e2e2e;font-weight:800;font-size:15px;color:#ffa600">${tm.mp}</td>
+        <td style="padding:9px 8px;text-align:center;border-bottom:1px solid #2e2e2e;color:#c8b99a;font-size:12px">${tm.win}-${tm.lose}</td>
         <td style="padding:9px 8px;text-align:center;border-bottom:1px solid #2e2e2e;font-weight:700;font-size:12px;color:${ngCol}">${ng}</td>
-        <td style="padding:9px 8px;text-align:center;border-bottom:1px solid #2e2e2e;color:#8a7a66;font-size:11px">${t.gw}-${t.gl}</td>
+        <td style="padding:9px 8px;text-align:center;border-bottom:1px solid #2e2e2e;color:#8a7a66;font-size:11px">${tm.gw}-${tm.gl}</td>
       </tr>`;
     }).join("");
 
@@ -471,13 +712,13 @@ function buildShareHTML(type, logoB64) {
         <div style="padding:28px 40px 16px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid #2e2e2e">
           <div>
             <div style="font-size:22px;font-weight:800;color:#f5f0e8;letter-spacing:3px;text-transform:uppercase">MPL Season 17</div>
-            <div style="font-size:11px;color:#8a7a66;letter-spacing:2px;margin-top:2px;text-transform:uppercase">Regular Season Standings</div>
+            <div style="font-size:11px;color:#8a7a66;letter-spacing:2px;margin-top:2px;text-transform:uppercase">${t("shareRegularSeason")}</div>
           </div>
           <div style="text-align:right">
-            <div style="font-size:11px;color:#ffa600;font-weight:700;letter-spacing:1px">${CURRENT_WEEK} · ${dateStr}</div>
+            <div style="font-size:11px;color:#ffa600;font-weight:700;letter-spacing:1px">${weekLabel} · ${dateStr}</div>
             <div style="display:flex;gap:12px;margin-top:8px;justify-content:flex-end">
-              <div style="display:flex;align-items:center;gap:5px;font-size:10px;color:#8a7a66"><span style="width:8px;height:8px;border-radius:1px;background:rgba(74,222,128,0.3);display:inline-block"></span>Playoff Zone (1-6)</div>
-              <div style="display:flex;align-items:center;gap:5px;font-size:10px;color:#8a7a66"><span style="width:8px;height:8px;border-radius:1px;background:rgba(192,57,43,0.3);display:inline-block"></span>Eliminated (7-9)</div>
+              <div style="display:flex;align-items:center;gap:5px;font-size:10px;color:#8a7a66"><span style="width:8px;height:8px;border-radius:1px;background:rgba(74,222,128,0.3);display:inline-block"></span>${t("sharePlayoffZone")}</div>
+              <div style="display:flex;align-items:center;gap:5px;font-size:10px;color:#8a7a66"><span style="width:8px;height:8px;border-radius:1px;background:rgba(192,57,43,0.3);display:inline-block"></span>${t("shareEliminated")}</div>
             </div>
           </div>
         </div>
@@ -486,11 +727,11 @@ function buildShareHTML(type, logoB64) {
             <thead>
               <tr style="border-bottom:2px solid #ffa600">
                 <th style="padding:10px 8px;text-align:center;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:#8a7a66;font-weight:700;width:44px">#</th>
-                <th style="padding:10px 8px;text-align:left;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:#8a7a66;font-weight:700">Team</th>
-                <th style="padding:10px 8px;text-align:center;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:#ffa600;font-weight:700">Pts</th>
-                <th style="padding:10px 8px;text-align:center;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:#8a7a66;font-weight:700">W-L</th>
-                <th style="padding:10px 8px;text-align:center;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:#ffa600;font-weight:700">Net</th>
-                <th style="padding:10px 8px;text-align:center;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:#8a7a66;font-weight:700">Game W-L</th>
+                <th style="padding:10px 8px;text-align:left;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:#8a7a66;font-weight:700">${t("shareTeam")}</th>
+                <th style="padding:10px 8px;text-align:center;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:#ffa600;font-weight:700">${t("sharePts")}</th>
+                <th style="padding:10px 8px;text-align:center;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:#8a7a66;font-weight:700">${t("shareWL")}</th>
+                <th style="padding:10px 8px;text-align:center;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:#ffa600;font-weight:700">${t("shareNet")}</th>
+                <th style="padding:10px 8px;text-align:center;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:#8a7a66;font-weight:700">${t("shareGameWL")}</th>
               </tr>
             </thead>
             <tbody>${rows}</tbody>
@@ -504,7 +745,7 @@ function buildShareHTML(type, logoB64) {
   }
 
   if (type === "chances") {
-    const rows = chances.map((t, i) => {
+    const rows = chances.map((tm, i) => {
       const rank = i + 1;
       const isTop = rank <= 6;
       const rowBg = isTop ? "rgba(74,222,128,0.06)" : "rgba(192,57,43,0.08)";
@@ -528,14 +769,14 @@ function buildShareHTML(type, logoB64) {
         </td>
         <td style="padding:8px 8px;text-align:left;border-bottom:1px solid #2e2e2e;border-left:${borderLeft}">
           <div style="display:flex;align-items:center;gap:8px">
-            ${logoImg(t.name, 24)}
-            <span style="font-weight:700;font-size:11px;color:#f5f0e8">${t.name}</span>
+            ${logoImg(tm.name, 24)}
+            <span style="font-weight:700;font-size:11px;color:#f5f0e8">${tm.name}</span>
           </div>
         </td>
-        <td style="padding:8px 12px;border-bottom:1px solid #2e2e2e">${miniBar(t.playoff, pNum(t.playoff) >= 70 ? "#6fcf3a" : pNum(t.playoff) >= 40 ? "#ffff47" : pNum(t.playoff) >= 20 ? "#ff6a00" : "#e06060")}</td>
-        <td style="padding:8px 12px;border-bottom:1px solid #2e2e2e">${miniBar(t.upper, "#6fcf3a")}</td>
-        <td style="padding:8px 12px;border-bottom:1px solid #2e2e2e">${miniBar(t.lower, "#60aaee")}</td>
-        <td style="padding:8px 12px;border-bottom:1px solid #2e2e2e">${miniBar(t.elim, "#e06060")}</td>
+        <td style="padding:8px 12px;border-bottom:1px solid #2e2e2e">${miniBar(tm.playoff, pNum(tm.playoff) >= 70 ? "#6fcf3a" : pNum(tm.playoff) >= 40 ? "#ffff47" : pNum(tm.playoff) >= 20 ? "#ff6a00" : "#e06060")}</td>
+        <td style="padding:8px 12px;border-bottom:1px solid #2e2e2e">${miniBar(tm.upper, "#6fcf3a")}</td>
+        <td style="padding:8px 12px;border-bottom:1px solid #2e2e2e">${miniBar(tm.lower, "#60aaee")}</td>
+        <td style="padding:8px 12px;border-bottom:1px solid #2e2e2e">${miniBar(tm.elim, "#e06060")}</td>
       </tr>`;
     }).join("");
 
@@ -545,15 +786,15 @@ function buildShareHTML(type, logoB64) {
         <div style="padding:28px 40px 16px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid #2e2e2e">
           <div>
             <div style="font-size:22px;font-weight:800;color:#f5f0e8;letter-spacing:3px;text-transform:uppercase">MPL Season 17</div>
-            <div style="font-size:11px;color:#8a7a66;letter-spacing:2px;margin-top:2px;text-transform:uppercase">Chance to Make Playoffs</div>
+            <div style="font-size:11px;color:#8a7a66;letter-spacing:2px;margin-top:2px;text-transform:uppercase">${t("shareChanceMakePlayoffs")}</div>
           </div>
           <div style="text-align:right">
-            <div style="font-size:11px;color:#ffa600;font-weight:700;letter-spacing:1px">${CURRENT_WEEK} · ${dateStr}</div>
+            <div style="font-size:11px;color:#ffa600;font-weight:700;letter-spacing:1px">${weekLabel} · ${dateStr}</div>
             <div style="display:flex;gap:12px;margin-top:8px;justify-content:flex-end">
-              <div style="display:flex;align-items:center;gap:5px;font-size:10px;color:#6fcf3a"><span style="width:10px;height:3px;border-radius:1px;background:#6fcf3a;display:inline-block"></span>Playoff 1-6</div>
-              <div style="display:flex;align-items:center;gap:5px;font-size:10px;color:#6fcf3a"><span style="width:10px;height:3px;border-radius:1px;background:#6fcf3a;display:inline-block"></span>Upper 1-2</div>
-              <div style="display:flex;align-items:center;gap:5px;font-size:10px;color:#60aaee"><span style="width:10px;height:3px;border-radius:1px;background:#60aaee;display:inline-block"></span>Lower 3-6</div>
-              <div style="display:flex;align-items:center;gap:5px;font-size:10px;color:#e06060"><span style="width:10px;height:3px;border-radius:1px;background:#e06060;display:inline-block"></span>Elim 7-9</div>
+              <div style="display:flex;align-items:center;gap:5px;font-size:10px;color:#6fcf3a"><span style="width:10px;height:3px;border-radius:1px;background:#6fcf3a;display:inline-block"></span>${t("sharePlayoff")}</div>
+              <div style="display:flex;align-items:center;gap:5px;font-size:10px;color:#6fcf3a"><span style="width:10px;height:3px;border-radius:1px;background:#6fcf3a;display:inline-block"></span>${t("shareUpper")}</div>
+              <div style="display:flex;align-items:center;gap:5px;font-size:10px;color:#60aaee"><span style="width:10px;height:3px;border-radius:1px;background:#60aaee;display:inline-block"></span>${t("shareLower")}</div>
+              <div style="display:flex;align-items:center;gap:5px;font-size:10px;color:#e06060"><span style="width:10px;height:3px;border-radius:1px;background:#e06060;display:inline-block"></span>${t("shareElim")}</div>
             </div>
           </div>
         </div>
@@ -562,11 +803,11 @@ function buildShareHTML(type, logoB64) {
             <thead>
               <tr style="border-bottom:2px solid #ffa600">
                 <th style="padding:10px 8px;text-align:center;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:#8a7a66;font-weight:700;width:40px">#</th>
-                <th style="padding:10px 8px;text-align:left;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:#8a7a66;font-weight:700">Team</th>
-                <th style="padding:10px 8px;text-align:left;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:#ffa600;font-weight:700">Playoff (1-6)</th>
-                <th style="padding:10px 8px;text-align:left;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:#6fcf3a;font-weight:700">Upper (1-2)</th>
-                <th style="padding:10px 8px;text-align:left;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:#60aaee;font-weight:700">Lower (3-6)</th>
-                <th style="padding:10px 8px;text-align:left;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:#e06060;font-weight:700">Eliminasi (7-9)</th>
+                <th style="padding:10px 8px;text-align:left;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:#8a7a66;font-weight:700">${t("shareTeam")}</th>
+                <th style="padding:10px 8px;text-align:left;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:#ffa600;font-weight:700">${t("playoff16")}</th>
+                <th style="padding:10px 8px;text-align:left;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:#6fcf3a;font-weight:700">${t("upper12")}</th>
+                <th style="padding:10px 8px;text-align:left;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:#60aaee;font-weight:700">${t("lower36")}</th>
+                <th style="padding:10px 8px;text-align:left;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:#e06060;font-weight:700">${t("elim79")}</th>
               </tr>
             </thead>
             <tbody>${rows}</tbody>
@@ -583,7 +824,7 @@ function buildShareHTML(type, logoB64) {
 async function downloadShareImage(type) {
   const btn = document.getElementById(type === "standings" ? "dlStandBtn" : "dlChanceBtn");
   const originalHTML = btn.innerHTML;
-  btn.innerHTML = `<span class="dl-spinner"></span> Loading logos...`;
+  btn.innerHTML = `<span class="dl-spinner"></span> ${t("loadingLogos")}`;
   btn.disabled = true;
 
   try {
@@ -591,8 +832,7 @@ async function downloadShareImage(type) {
     if (!html2canvas) throw new Error("html2canvas not loaded");
 
     const logoB64 = await preloadLogos(TEAMS);
-
-    btn.innerHTML = `<span class="dl-spinner"></span> Rendering...`;
+    btn.innerHTML = `<span class="dl-spinner"></span> ${t("rendering")}`;
 
     const shareHTML = buildShareHTML(type, logoB64);
     const container = document.getElementById("shareExportContainer");
@@ -620,310 +860,291 @@ async function downloadShareImage(type) {
     link.click();
   } catch (err) {
     console.error("Download error:", err);
-    alert("Gagal menghasilkan gambar: " + err.message);
+    alert(t("errorImage") + err.message);
   } finally {
     btn.innerHTML = originalHTML;
     btn.disabled = false;
   }
 }
 
-function getPlayoffSeeds() {
-  const stats = computeStats();
-  const arr = sorted(stats);
-  return arr.map((t) => t.name);
+// ══════════════════════════════════════════════════════════
+//  SCHEDULE IMAGE DOWNLOAD
+// ══════════════════════════════════════════════════════════
+
+function getSchedWeekForExport() {
+  return activeWeek === "ALL" ? CURRENT_WEEK : activeWeek;
 }
 
-function winnerOf(matchKey, teamA, teamB) {
-  const sc = playoffScores[matchKey];
-  if (!sc) return null;
-  if (sc.a > sc.b) return teamA;
-  if (sc.b > sc.a) return teamB;
-  return null;
+function getAvailableDaysForWeek(week) {
+  const dayOrder = { "Day 1": 1, "Day 2": 2, "Day 3": 3 };
+  const days = [...new Set(
+    schedule
+      .filter(m => m.week === week)
+      .map(m => m.day)
+  )].sort((a, b) => (dayOrder[a] || 0) - (dayOrder[b] || 0));
+  return days;
 }
 
-function loserOf(matchKey, teamA, teamB) {
-  const sc = playoffScores[matchKey];
-  if (!sc) return null;
-  if (sc.a > sc.b) return teamB;
-  if (sc.b > sc.a) return teamA;
-  return null;
+function showSchedDownloadModal() {
+  const week = getSchedWeekForExport();
+  const days = getAvailableDaysForWeek(week);
+
+  const modal = document.getElementById("schedDlModal");
+  const weekLabel = document.getElementById("schedDlWeekLabel");
+  const dayBtns = document.getElementById("schedDlDayBtns");
+
+  const localWeek = currentLang === "id" ? week.replace("Week ", "Minggu ") : week;
+  weekLabel.textContent = localWeek;
+
+  let html = `<button class="sched-dl-opt-btn" id="schedDlAllDays" onclick="triggerSchedDownload('all')">
+    <span class="sched-dl-icon">🗓️</span>
+    <span>${t("downloadAllDays")}</span>
+    <span class="sched-dl-sub">${t("allDaysDesc")}</span>
+  </button>`;
+
+  days.forEach((day) => {
+    const daySlug = day.toLowerCase().replace(" ", "");
+    const localDay = currentLang === "id" ? day.replace("Day ", "Hari ") : day;
+    const matchCount = schedule.filter(m => m.week === week && m.day === day).length;
+    html += `<button class="sched-dl-opt-btn" onclick="triggerSchedDownload('${daySlug}')">
+      <span class="sched-dl-icon">📅</span>
+      <span>${localDay}</span>
+      <span class="sched-dl-sub">${matchCount} ${t("matches")}</span>
+    </button>`;
+  });
+
+  dayBtns.innerHTML = html;
+  modal.classList.add("visible");
 }
 
-function computePlayoffSlots() {
-  const seeds = getPlayoffSeeds();
-  const s1 = seeds[0] || null, s2 = seeds[1] || null;
-  const s3 = seeds[2] || null, s4 = seeds[3] || null;
-  const s5 = seeds[4] || null, s6 = seeds[5] || null;
-
-  const m1A = s3, m1B = s6;
-  const winM1 = winnerOf("m1", m1A, m1B);
-  const losM1 = loserOf("m1", m1A, m1B);
-
-  const m2A = s4, m2B = s5;
-  const winM2 = winnerOf("m2", m2A, m2B);
-  const losM2 = loserOf("m2", m2A, m2B);
-
-  const m3A = winM1, m3B = s2;
-  const winM3 = winnerOf("m3", m3A, m3B);
-  const losM3 = loserOf("m3", m3A, m3B);
-
-  const m4A = winM2, m4B = s1;
-  const winM4 = winnerOf("m4", m4A, m4B);
-  const losM4 = loserOf("m4", m4A, m4B);
-
-  const m5A = losM3, m5B = losM4;
-  const winM5 = winnerOf("m5", m5A, m5B);
-
-  const m6A = winM3, m6B = winM4;
-  const winM6 = winnerOf("m6", m6A, m6B);
-  const losM6 = loserOf("m6", m6A, m6B);
-
-  const m7A = losM6, m7B = winM5;
-  const winM7 = winnerOf("m7", m7A, m7B);
-
-  const m8A = winM6, m8B = winM7;
-  const winM8 = winnerOf("m8", m8A, m8B);
-
-  return {
-    m1: { A: m1A, B: m1B, label: "M1 · BO5", tag: "LOWER BRACKET", tagColor: "#ffa600" },
-    m2: { A: m2A, B: m2B, label: "M2 · BO5", tag: "LOWER BRACKET", tagColor: "#ffa600" },
-    m3: { A: m3A, B: m3B, label: "M3 · BO5", tag: "UPPER BRACKET", tagColor: "#ffa600" },
-    m4: { A: m4A, B: m4B, label: "M4 · BO5", tag: "UPPER BRACKET", tagColor: "#ffa600" },
-    m5: { A: m5A, B: m5B, label: "M5 · BO5", tag: "LOWER ELIM", tagColor: "#ffa600" },
-    m6: { A: m6A, B: m6B, label: "M6 · BO5", tag: "UPPER FINAL", tagColor: "#ffa600" },
-    m7: { A: m7A, B: m7B, label: "M7 · BO7", tag: "LOWER FINAL", tagColor: "#ffa600" },
-    m8: { A: m8A, B: m8B, label: "M8 · BO7", tag: "GRAND FINAL", tagColor: "#ffa600", isGF: true },
-    winM8,
-  };
+function hideSchedDownloadModal() {
+  const modal = document.getElementById("schedDlModal");
+  modal.classList.remove("visible");
 }
 
-function pfMatchCard(matchKey, slot) {
-  const sc = playoffScores[matchKey];
-  const isBO7 = matchKey === "m7" || matchKey === "m8";
-  const opts = isBO7
-    ? [["tbd","— TBD —"],["4-0","4-0"],["4-1","4-1"],["4-2","4-2"],["4-3","4-3"],["3-4","3-4"],["2-4","2-4"],["1-4","1-4"],["0-4","0-4"]]
-    : [["tbd","— TBD —"],["3-0","3-0"],["3-1","3-1"],["3-2","3-2"],["2-3","2-3"],["1-3","1-3"],["0-3","0-3"]];
+async function triggerSchedDownload(mode) {
+  hideSchedDownloadModal();
 
-  const curVal = sc ? `${sc.a}-${sc.b}` : "tbd";
-  const selOpts = opts.map(([v, l]) => `<option value="${v}"${curVal === v ? " selected" : ""}>${l}</option>`).join("");
+  const week = getSchedWeekForExport();
+  const weekNum = week.split(" ")[1];
+  const localWeek = currentLang === "id" ? week.replace("Week ", "Minggu ") : week;
+  const isLight = document.documentElement.classList.contains("light");
+  const bgColor  = isLight ? "#f2ede4" : "#0d0d0d";
+  const bg2Color = isLight ? "#e9e2d7" : "#161616";
+  const bg3Color = isLight ? "#e1d9cc" : "#1e1e1e";
+  const bg4Color = isLight ? "#d8cfbf" : "#252525";
+  const textColor  = isLight ? "#0a0806" : "#f5f0e8";
+  const text2Color = isLight ? "#374738" : "#c8b99a";
+  const text3Color = isLight ? "#756850" : "#8a7a66";
+  const borderColor = isLight ? "#c8bfaf" : "#2e2e2e";
+  const border2Color = isLight ? "#b8ad9c" : "#3a3a3a";
+  const accentColor = "#ffa600";
 
-  const aWin = sc && sc.a > sc.b;
-  const bWin = sc && sc.b > sc.a;
+  const dayOrder = { "day1": "Day 1", "day2": "Day 2", "day3": "Day 3" };
+  let daysToRender = [];
+  if (mode === "all") {
+    daysToRender = getAvailableDaysForWeek(week);
+  } else {
+    const dayName = dayOrder[mode];
+    if (dayName) daysToRender = [dayName];
+  }
 
-  const teamRow = (name, score, isWinner) => {
-    const winCls = isWinner ? " pfc-winner" : "";
-    return `<div class="pfc-team${winCls}">
-      <div class="pfc-team-info">
-        ${name
-          ? `<img src="${logo(name)}" onerror="this.style.display='none'" class="pfc-logo"><span class="pfc-name">${name}</span>`
-          : `<span class="pfc-tbd">TBD</span>`
-        }
-      </div>
-      <span class="pfc-score">${score !== undefined ? score : ""}</span>
-    </div>`;
-  };
+  if (daysToRender.length === 0) {
+    alert(t("noSchedule"));
+    return;
+  }
 
-  return `<div class="pfc-card ${slot.isGF ? "pfc-gf" : ""}" id="pfc-${matchKey}">
-    <div class="pfc-header">
-      <span class="pfc-label">${slot.label}</span>
-      <span class="pfc-tag" style="color:${slot.tagColor};border-color:${slot.tagColor}44;background:${slot.tagColor}18">${slot.tag}</span>
-    </div>
-    <div class="pfc-teams">
-      ${teamRow(slot.A, sc ? sc.a : undefined, aWin)}
-      <div class="pfc-divider"></div>
-      ${teamRow(slot.B, sc ? sc.b : undefined, bWin)}
-    </div>
-    <div class="pfc-ctrl">
-      <select class="pfc-sel" data-match="${matchKey}">${selOpts}</select>
-    </div>
-  </div>`;
-}
+  showSchedDlLoading(true, t("loadingLogos"));
 
-function drawConnectors(container) {
-  const old = container.querySelector(".pfc-svg-overlay");
-  if (old) old.remove();
+  try {
+    const html2canvas = window.html2canvas;
+    if (!html2canvas) throw new Error("html2canvas not loaded");
 
-  const wrap = container.querySelector(".pfc-canvas");
-  if (!wrap) return;
+    const logoB64 = await preloadLogos(TEAMS);
+    showSchedDlLoading(true, t("rendering"));
 
-  const wrapRect = wrap.getBoundingClientRect();
+    const now = new Date();
+    const locale = currentLang === "id" ? "id-ID" : "en-GB";
+    const dateStr = now.toLocaleDateString(locale, { day: "numeric", month: "long", year: "numeric" });
 
-  const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
-  svg.classList.add("pfc-svg-overlay");
-  svg.style.cssText = "position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;overflow:visible;";
+    const logoImg = (teamName, size = 26) => {
+      const src = logoB64[teamName];
+      if (src) {
+        return `<img src="${src}" style="width:${size}px;height:${size}px;object-fit:contain;border-radius:50%;background:${bg4Color};padding:2px;flex-shrink:0;vertical-align:middle">`;
+      }
+      const initials = teamName.split(" ").map(w => w[0]).slice(0, 2).join("");
+      return `<span style="display:inline-flex;align-items:center;justify-content:center;width:${size}px;height:${size}px;border-radius:50%;background:${bg4Color};font-size:${Math.round(size * 0.38)}px;font-weight:800;color:${accentColor};flex-shrink:0">${initials}</span>`;
+    };
 
-  function drawLine(fromId, toId, color = "#555", fromBottom = false) {
-    const from = wrap.querySelector(`#pfc-${fromId}`);
-    const to   = wrap.querySelector(`#pfc-${toId}`);
-    if (!from || !to) return;
+    const scoreLabel = (aScore, bScore) => {
+      if (aScore === 0 && bScore === 0) return "— TBD —";
+      return `${aScore} - ${bScore}`;
+    };
 
-    const fr = from.getBoundingClientRect();
-    const tr = to.getBoundingClientRect();
-    const wr = wrapRect;
+    const scoreColor = (aScore, bScore) => {
+      if (aScore === 0 && bScore === 0) return text3Color;
+      return accentColor;
+    };
 
-    const x1 = fr.right  - wr.left;
-    const y1 = fromBottom
-      ? (fr.top - wr.top + fr.height * 0.75)
-      : (fr.top - wr.top + fr.height / 2);
+    const buildDaySection = (day) => {
+      const matches = schedule.filter(m => m.week === week && m.day === day);
+      const localDay = currentLang === "id" ? day.replace("Day ", "Hari ") : day;
+      const matchRows = matches.map(m => {
+        const sc = scoreLabel(m.aScore, m.bScore);
+        const scCol = scoreColor(m.aScore, m.bScore);
+        const hasResult = !(m.aScore === 0 && m.bScore === 0);
+        const aWin = hasResult && m.aScore > m.bScore;
+        const bWin = hasResult && m.bScore > m.aScore;
 
-    const x2 = tr.left  - wr.left;
-    const y2 = tr.top - wr.top + tr.height / 2;
+        return `<div style="display:flex;align-items:center;background:${bg3Color};border:1px solid ${borderColor};border-radius:6px;padding:12px 16px;margin-bottom:10px;gap:12px;">
+          <div style="display:flex;align-items:center;gap:8px;flex:1;min-width:0;opacity:${bWin ? '0.55' : '1'}">
+            ${logoImg(m.A, 28)}
+            <span style="font-weight:800;font-size:13px;color:${textColor};white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${m.A}</span>
+            ${aWin ? `<span style="margin-left:auto;font-size:9px;font-weight:800;padding:2px 7px;border-radius:3px;background:rgba(111,207,58,0.15);color:#6fcf3a;border:1px solid rgba(111,207,58,0.3);white-space:nowrap">WIN</span>` : ''}
+          </div>
+          <div style="flex-shrink:0;text-align:center;min-width:80px;">
+            <div style="font-size:15px;font-weight:900;color:${scCol};font-family:monospace;letter-spacing:1px">${sc}</div>
+            <div style="font-size:9px;color:${text3Color};letter-spacing:1.5px;text-transform:uppercase;margin-top:2px">${t("bestOf3")}</div>
+          </div>
+          <div style="display:flex;align-items:center;gap:8px;flex:1;min-width:0;justify-content:flex-end;opacity:${aWin ? '0.55' : '1'}">
+            ${bWin ? `<span style="margin-right:auto;font-size:9px;font-weight:800;padding:2px 7px;border-radius:3px;background:rgba(111,207,58,0.15);color:#6fcf3a;border:1px solid rgba(111,207,58,0.3);white-space:nowrap">WIN</span>` : ''}
+            <span style="font-weight:800;font-size:13px;color:${textColor};white-space:nowrap;overflow:hidden;text-overflow:ellipsis;text-align:right">${m.B}</span>
+            ${logoImg(m.B, 28)}
+          </div>
+        </div>`;
+      }).join("");
 
-    const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
+      return `<div style="margin-bottom:20px;">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px;">
+          <div style="width:3px;height:20px;background:${accentColor};border-radius:2px;flex-shrink:0"></div>
+          <span style="font-size:11px;font-weight:800;color:${text2Color};letter-spacing:2.5px;text-transform:uppercase">${localDay}</span>
+          <div style="flex:1;height:1px;background:${borderColor}"></div>
+          <span style="font-size:10px;color:${text3Color};letter-spacing:1px">${matches.length} ${t("matches")}</span>
+        </div>
+        ${matchRows}
+      </div>`;
+    };
 
-    if (Math.abs(y1 - y2) <= 4) {
-      path.setAttribute("d", `M${x1},${y1} H${x2}`);
+    const allDaySections = daysToRender.map(buildDaySection).join("");
+    const CARD_W = 680;
+    const matchCountTotal = daysToRender.reduce((sum, day) => {
+      return sum + schedule.filter(m => m.week === week && m.day === day).length;
+    }, 0);
+
+    const headerH  = 90;
+    const perMatch = 68;
+    const dayHeaderH = 44;
+    const footerH  = 42;
+    const padV     = 32;
+    const totalH   = headerH + padV + (daysToRender.length * dayHeaderH) + (matchCountTotal * perMatch) + footerH;
+
+    const schedTitle = currentLang === "id"
+      ? `${t("shareMatchSchedule")}${mode !== 'all' ? ` · ${daysToRender[0].replace("Day ", "Hari ")}` : ''}`
+      : `${t("shareMatchSchedule")}${mode !== 'all' ? ` · ${daysToRender[0]}` : ''}`;
+
+    const htmlContent = `
+      <div style="width:${CARD_W}px;background:${bgColor};font-family:'Segoe UI',system-ui,sans-serif;overflow:hidden;position:relative;border-radius:0;">
+        <div style="height:3px;background:linear-gradient(90deg,#ffa600,#ff7b00,#ffa600);width:100%"></div>
+        <div style="padding:22px 28px 18px;border-bottom:1px solid ${borderColor};display:flex;align-items:center;justify-content:space-between;background:${bg2Color};">
+          <div>
+            <div style="font-size:18px;font-weight:800;color:${textColor};letter-spacing:3px;text-transform:uppercase">MPL ID Season 17</div>
+            <div style="font-size:10px;color:${accentColor};letter-spacing:2.5px;margin-top:4px;text-transform:uppercase;font-weight:700">
+              ${localWeek} · ${schedTitle}
+            </div>
+          </div>
+          <div style="text-align:right">
+            <div style="font-size:10px;color:${text3Color};letter-spacing:1px">${dateStr}</div>
+            <div style="margin-top:6px;display:inline-block;padding:3px 10px;border-radius:3px;border:1px solid ${accentColor}44;background:${accentColor}18;font-size:9px;font-weight:800;color:${accentColor};letter-spacing:1.5px;text-transform:uppercase">${t("shareRegularSeasonLabel")}</div>
+          </div>
+        </div>
+        <div style="padding:20px 28px 12px;">
+          ${allDaySections}
+        </div>
+        <div style="padding:10px 28px;border-top:1px solid ${borderColor};display:flex;align-items:center;justify-content:space-between;background:${bg2Color};">
+          <div style="font-size:9px;color:${text3Color};letter-spacing:1.5px;text-transform:uppercase">mpl id s17 · ${t("shareRegularSeasonLabel")}</div>
+          <div style="font-size:9px;color:${border2Color};letter-spacing:1px">${localWeek}</div>
+        </div>
+      </div>`;
+
+    const container = document.getElementById("shareExportContainer");
+    container.innerHTML = htmlContent;
+    container.style.display = "block";
+
+    await new Promise(r => requestAnimationFrame(() => requestAnimationFrame(r)));
+    await new Promise(r => setTimeout(r, 120));
+
+    const el = container.firstElementChild;
+    const elH = el.scrollHeight || totalH;
+
+    const canvas = await html2canvas(el, {
+      scale: 2,
+      useCORS: true,
+      allowTaint: true,
+      backgroundColor: bgColor,
+      width: CARD_W,
+      height: elH,
+      windowWidth: CARD_W,
+      windowHeight: elH,
+      logging: false,
+      imageTimeout: 0,
+    });
+
+    container.style.display = "none";
+    container.innerHTML = "";
+
+    let fileName;
+    if (mode === "all") {
+      fileName = `mpl-week-${weekNum}-schedule.png`;
     } else {
-      const midX = (x1 + x2) / 2;
-      path.setAttribute("d", `M${x1},${y1} H${midX} V${y2} H${x2}`);
+      const dayNum = mode.replace("day", "");
+      fileName = `mpl-week-${weekNum}-day-${dayNum}.png`;
     }
 
-    path.setAttribute("fill", "none");
-    path.setAttribute("stroke", color);
-    path.setAttribute("stroke-width", "2");
-    path.setAttribute("stroke-linecap", "round");
-    path.setAttribute("stroke-linejoin", "round");
-    svg.appendChild(path);
+    const link = document.createElement("a");
+    link.download = fileName;
+    link.href = canvas.toDataURL("image/png");
+    link.click();
+
+  } catch (err) {
+    console.error("Schedule download error:", err);
+    alert(t("errorImage") + err.message);
+  } finally {
+    showSchedDlLoading(false);
   }
-
-  drawLine("m1", "m3", "#ffa600");
-  drawLine("m2", "m4", "#ffa600");
-  drawLine("m3", "m6", "#ffa600");
-  drawLine("m4", "m6", "#ffa600");
-  drawLine("m5", "m7", "#ffa600");
-  drawLine("m6", "m8", "#ffa600");
-  drawLine("m7", "m8", "#ffa600");
-
-  wrap.appendChild(svg);
 }
 
-function renderPlayoffBracket() {
-  const container = document.getElementById("playoffBracket");
-  if (!container) return;
-
-  const slots = computePlayoffSlots();
-
-  const PAD   = 16;
-  const GAP   = 20;
-  const totalW = container.clientWidth - PAD * 2;
-
-  const COL_W  = Math.floor((totalW - GAP * 3) / 4);
-
-  const C0 = 0;
-  const C1 = COL_W + GAP;
-  const C2 = (COL_W + GAP) * 2;
-  const C3 = (COL_W + GAP) * 3;
-
-  const CARD_H  = 118;
-  const ROW1    = 30;
-  const ROW2    = 310;
-  const ROW_M5  = 490;
-  const ROW_M6  = Math.round((ROW1 + ROW2 + CARD_H) / 2 - CARD_H / 2);
-  const ROW_M8  = Math.round((ROW_M6 + ROW_M5 + CARD_H) / 2 - CARD_H / 2);
-
-  const positions = {
-    m1: { left: C0, top: ROW1   },
-    m2: { left: C0, top: ROW2   },
-    m3: { left: C1, top: ROW1   },
-    m4: { left: C1, top: ROW2   },
-    m5: { left: C1, top: ROW_M5 },
-    m6: { left: C2, top: ROW_M6 },
-    m7: { left: C2, top: ROW_M5 },
-    m8: { left: C3, top: ROW_M8 },
-  };
-
-  const colLabels = [
-    { left: C0, w: COL_W, label: "LOWER BRACKET",          color: "#ffa600" },
-    { left: C1, w: COL_W, label: "UPPER BRACKET / LOWER ELIM",   color: "#ffa600" },
-    { left: C2, w: COL_W, label: "UPPER FINAL / LOWER FINAL", color: "#ffa600" },
-    { left: C3, w: COL_W, label: "GRAND FINAL",            color: "#ffa600" },
-  ];
-
-  const CANVAS_W = totalW;
-  const CANVAS_H = ROW_M5 + CARD_H + 50;
-
-  let html = `<div class="pfc-canvas" style="position:relative;width:${CANVAS_W}px;height:${CANVAS_H}px;">`;
-
-  colLabels.forEach(({ left, w, label, color }) => {
-    html += `<div class="pfc-col-label" style="left:${left}px;width:${w}px;color:${color}">${label}</div>`;
-  });
-
-  Object.entries(positions).forEach(([key, pos]) => {
-    html += `<div style="position:absolute;left:${pos.left}px;top:${pos.top + 28}px;width:${COL_W}px;">
-      ${pfMatchCard(key, slots[key])}
-    </div>`;
-  });
-
-  html += `</div>`;
-
-  if (slots.winM8) {
-    html += `<div class="pfc-champion">
-      <div class="pfc-champ-trophy"></div>
-      <div>
-        <div class="pfc-champ-label">CHAMPION</div>
-        <div class="pfc-champ-team">
-          <img src="${logo(slots.winM8)}" onerror="this.style.display='none'">
-          <span>${slots.winM8}</span>
-        </div>
-      </div>
-    </div>`;
+function showSchedDlLoading(show, text = "") {
+  const overlay = document.getElementById("schedDlLoadingOverlay");
+  const loadText = document.getElementById("schedDlLoadText");
+  if (!overlay) return;
+  if (show) {
+    loadText.textContent = text || t("processing");
+    overlay.classList.add("visible");
+  } else {
+    overlay.classList.remove("visible");
   }
-
-  container.innerHTML = html;
-
-  requestAnimationFrame(() => {
-    drawConnectors(container);
-  });
-
-  container.querySelectorAll(".pfc-sel").forEach((sel) => {
-    sel.addEventListener("change", () => {
-      const mk = sel.dataset.match;
-      const v = sel.value;
-      if (v === "tbd") {
-        playoffScores[mk] = null;
-      } else {
-        const [a, b] = v.split("-").map(Number);
-        playoffScores[mk] = { a, b };
-      }
-      savePlayoffScores();
-      renderPlayoffBracket();
-    });
-  });
 }
+
 function switchTab(tab) {
-  mobileTab = tab;
   document.getElementById("tabSched").classList.toggle("active", tab === "schedule");
   document.getElementById("tabStand").classList.toggle("active", tab === "standings");
-  document.getElementById("tabPlayoff")?.classList.toggle("active", tab === "playoff");
   if (window.innerWidth <= 700) {
     document.getElementById("schedulePanel").classList.toggle("hidden", tab !== "schedule");
     document.getElementById("standingsPanel").classList.toggle("hidden", tab !== "standings");
-    document.getElementById("playoffPanel")?.classList.toggle("hidden", tab !== "playoff");
   }
 }
+
 let isLight = false;
 
 function applyTheme(light) {
   isLight = light;
   const root = document.documentElement;
-  const icon  = document.getElementById("themeIcon");
-  const label = document.getElementById("themeLabel");
   if (light) {
     root.classList.add("light");
-    if (icon)  icon.textContent  = "☀️";
-    if (label) label.textContent = "Light";
   } else {
     root.classList.remove("light");
-    if (icon)  icon.textContent  = "🌙";
-    if (label) label.textContent = "Dark";
   }
   try { localStorage.setItem("mpl_theme", light ? "light" : "dark"); } catch(e) {}
-  const container = document.getElementById("playoffBracket");
-  if (container) requestAnimationFrame(() => drawConnectors(container));
-}
-
-function toggleTheme() {
-  applyTheme(!isLight);
 }
 
 function loadTheme() {
@@ -933,71 +1154,71 @@ function loadTheme() {
   } catch(e) {}
 }
 
+// ══════════════════════════════════════════════════════════
+//  INIT
+// ══════════════════════════════════════════════════════════
 
 function init() {
+  loadLang();
+  updateLangButton();
+
   const tf = document.getElementById("teamFilter");
-  TEAMS.forEach((t) => {
+  TEAMS.forEach((tm) => {
     const opt = document.createElement("option");
-    opt.value = t; opt.textContent = t;
+    opt.value = tm; opt.textContent = tm;
     tf.appendChild(opt);
   });
   tf.addEventListener("change", () => { activeTeam = tf.value; renderSchedule(); });
 
   loadSchedule();
-  loadPlayoffScores();
   loadTheme();
+  applyI18n();
   renderWeekNav();
   renderSchedule();
   renderStandings();
   renderChance();
-  renderPlayoffBracket();
-
-  let resizeTimer;
-  window.addEventListener("resize", () => {
-    clearTimeout(resizeTimer);
-    resizeTimer = setTimeout(() => renderPlayoffBracket(), 100);
-  });
 
   document.getElementById("resetBtn").addEventListener("click", () => {
-    if (confirm("Reset ke jadwal & skor default?")) {
+    if (confirm(t("confirmReset"))) {
       schedule = JSON.parse(JSON.stringify(DEFAULT));
       saveSchedule();
       renderSchedule();
       renderStandings();
       renderChance();
-      renderPlayoffBracket();
     }
   });
 
   document.getElementById("clearBtn").addEventListener("click", () => {
-    if (confirm("Kosongkan semua skor (set ke 0-0)?")) {
+    if (confirm(t("confirmClear"))) {
       schedule.forEach((m) => { m.aScore = 0; m.bScore = 0; });
       saveSchedule();
       renderSchedule();
       renderStandings();
       renderChance();
-      renderPlayoffBracket();
-    }
-  });
-
-  document.getElementById("resetPlayoffBtn")?.addEventListener("click", () => {
-    if (confirm("Reset semua skor playoff?")) {
-      playoffScores = { m1:null, m2:null, m3:null, m4:null, m5:null, m6:null, m7:null, m8:null };
-      savePlayoffScores();
-      renderPlayoffBracket();
     }
   });
 
   document.getElementById("dlStandBtn")?.addEventListener("click", () => downloadShareImage("standings"));
   document.getElementById("dlChanceBtn")?.addEventListener("click", () => downloadShareImage("chances"));
+  document.getElementById("dlSchedBtn")?.addEventListener("click", () => showSchedDownloadModal());
+
+  document.getElementById("schedDlModal")?.addEventListener("click", (e) => {
+    if (e.target === document.getElementById("schedDlModal")) hideSchedDownloadModal();
+  });
 }
 
 if (window.innerWidth <= 700) switchTab("schedule");
 init();
-function showTutorial(){
+
+function showTutorial() {
+  // Ensure tutorial list is rendered in current language
+  const tutList = document.getElementById("tutorialList");
+  if (tutList) {
+    tutList.innerHTML = t("tutorialItems").map((item) => `<li>${item}</li>`).join("");
+  }
   document.getElementById("tutorialModal").style.display = "flex";
 }
 
-function closeTutorial(){
+function closeTutorial() {
   document.getElementById("tutorialModal").style.display = "none";
 }
