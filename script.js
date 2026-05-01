@@ -294,7 +294,7 @@ const DEFAULT = [
   { week: "Week 5", day: "Day 3", A: "GEEK FAM", B: "ONIC", aScore: 2, bScore: 1 },
   { week: "Week 5", day: "Day 3", A: "DEWA UNITED", B: "TEAM LIQUID ID", aScore: 0, bScore: 0 },
   { week: "Week 6", day: "Day 1", A: "NAVI", B: "DEWA UNITED", aScore: 1, bScore: 2 },
-  { week: "Week 6", day: "Day 1", A: "ALTER EGO ESPORTS", B: "GEEK FAM", aScore: 0, bScore: 0 },
+  { week: "Week 6", day: "Day 1", A: "ALTER EGO ESPORTS", B: "GEEK FAM", aScore: 2, bScore: 1 },
   { week: "Week 6", day: "Day 2", A: "EVOS", B: "ALTER EGO ESPORTS", aScore: 0, bScore: 0 },
   { week: "Week 6", day: "Day 2", A: "TEAM LIQUID ID", B: "ONIC", aScore: 0, bScore: 0 },
   { week: "Week 6", day: "Day 2", A: "RRQ", B: "BIGETRON BY VIT", aScore: 0, bScore: 0 },
