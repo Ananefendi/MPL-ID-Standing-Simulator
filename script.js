@@ -307,14 +307,14 @@ const DEFAULT = [
   { week: "Week 7", day: "Day 2", A: "EVOS", B: "RRQ", aScore: 2, bScore: 0 },
   { week: "Week 7", day: "Day 2", A: "ONIC", B: "NAVI", aScore: 2, bScore: 0 },
   { week: "Week 7", day: "Day 3", A: "RRQ", B: "GEEK FAM", aScore: 0, bScore: 2 },
-  { week: "Week 7", day: "Day 3", A: "NAVI", B: "BIGETRON BY VIT", aScore: 0, bScore: 0 },
-  { week: "Week 7", day: "Day 3", A: "TEAM LIQUID ID", B: "EVOS", aScore: 0, bScore: 0 },
-  { week: "Week 8", day: "Day 1", A: "BIGETRON BY VIT", B: "GEEK FAM", aScore: 0, bScore: 0 },
-  { week: "Week 8", day: "Day 1", A: "DEWA UNITED", B: "ONIC", aScore: 0, bScore: 0 },
-  { week: "Week 8", day: "Day 2", A: "EVOS", B: "NAVI", aScore: 0, bScore: 0 },
-  { week: "Week 8", day: "Day 2", A: "TEAM LIQUID ID", B: "RRQ", aScore: 0, bScore: 0 },
-  { week: "Week 8", day: "Day 2", A: "ONIC", B: "ALTER EGO ESPORTS", aScore: 0, bScore: 0 },
-  { week: "Week 8", day: "Day 3", A: "DEWA UNITED", B: "EVOS", aScore: 0, bScore: 0 },
+  { week: "Week 7", day: "Day 3", A: "NAVI", B: "BIGETRON BY VIT", aScore: 2, bScore: 1 },
+  { week: "Week 7", day: "Day 3", A: "TEAM LIQUID ID", B: "EVOS", aScore: 0, bScore: 2 },
+  { week: "Week 8", day: "Day 1", A: "BIGETRON BY VIT", B: "GEEK FAM", aScore: 0, bScore: 2 },
+  { week: "Week 8", day: "Day 1", A: "DEWA UNITED", B: "ONIC", aScore: 0, bScore: 2 },
+  { week: "Week 8", day: "Day 2", A: "EVOS", B: "NAVI", aScore: 0, bScore: 2 },
+  { week: "Week 8", day: "Day 2", A: "TEAM LIQUID ID", B: "RRQ", aScore: 2, bScore: 0 },
+  { week: "Week 8", day: "Day 2", A: "ONIC", B: "ALTER EGO ESPORTS", aScore: 2, bScore: 1 },
+  { week: "Week 8", day: "Day 3", A: "DEWA UNITED", B: "EVOS", aScore: 0, bScore: 2 },
   { week: "Week 8", day: "Day 3", A: "ALTER EGO ESPORTS", B: "BIGETRON BY VIT", aScore: 0, bScore: 0 },
   { week: "Week 8", day: "Day 3", A: "RRQ", B: "NAVI", aScore: 0, bScore: 0 },
   { week: "Week 9", day: "Day 1", A: "BIGETRON BY VIT", B: "DEWA UNITED", aScore: 0, bScore: 0 },
@@ -461,11 +461,20 @@ function h2h(a, b) {
 function sorted(stats) {
   return Object.values(stats).sort((a, b) => {
     if (a.mp !== b.mp) return b.mp - a.mp;
+
+    // win rate match
     if (a.win !== b.win) return b.win - a.win;
+
+    // net game
     if (a.ng !== b.ng) return b.ng - a.ng;
+
+    // game won
     if (a.gw !== b.gw) return b.gw - a.gw;
+
+    // baru h2h terakhir
     const h = h2h(a.name, b.name);
     if (h !== 0) return h;
+
     return a.name.localeCompare(b.name);
   });
 }
@@ -1211,7 +1220,6 @@ if (window.innerWidth <= 700) switchTab("schedule");
 init();
 
 function showTutorial() {
-  // Ensure tutorial list is rendered in current language
   const tutList = document.getElementById("tutorialList");
   if (tutList) {
     tutList.innerHTML = t("tutorialItems").map((item) => `<li>${item}</li>`).join("");
